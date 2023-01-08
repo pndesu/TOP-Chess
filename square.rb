@@ -2,12 +2,14 @@ require_relative 'board.rb'
 
 class Square
     attr_accessor :color, :piece, :side, :position, :valid_moves
-    def initialize(color, piece = ' ', side = '', position = '', valid_moves = []) #Is position necessary?
+    def initialize(color, piece = ' ', side = '', notation = '', valid_moves = [], piece_name = '', position = [])
         @color = color
         @piece = piece
         @side = side
-        @position = position
+        @notation = notation
         @valid_moves = valid_moves
+        @piece_name = piece_name
+        @position = position
     end
 
     def display_square
@@ -15,8 +17,9 @@ class Square
         return square_white if color == 'white'
     end
 
-    def update_piece(piece, side)
+    def update_piece(piece, piece_name, side) #Update piece symbol, piece name and its side on square
         @piece = piece
+        @piece_name = piece_name
         @side = side
         display_square
     end

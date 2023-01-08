@@ -60,6 +60,54 @@ module PieceAction
             King.new('black', position)
         end
     end
+
+    def find_valid_moves(square)
+        case square.piece
+        when 'pawn' then find_valid_pawn_moves(square)
+        when 'knight' then find_valid_knight_moves(square)
+        when 'bishop' then find_valid_bishop_moves(square)
+        when 'rook' then find_valid_rook_moves(square)
+        when 'queen' then find_valid_queen_moves(square)
+        when 'king' then find_valid_king_moves(square)
+        end
+    end
+
+    def find_valid_pawn_moves(square)
+        square_row = square.position[0]
+        square_col = square.position[1]
+        vertical = find_occupied_squares_vertical
+        diagonal = find_occupied_squares_vertical
+        if square.side == 'white'
+            basic_moves = [Board.board[square_row - 1][square_col], Board.board[square_row - 1][square_col - 1], Board.board[square_row - 1][square_col + 1]]
+            ahead_square = vertical[1] if basic_moves.include?(vertical[1]) 
+            diag_square = diagonal[2..3].map{|blocked_square| blocked_square if (basic_moves.include?(blocked_square) && blocked_square.side == 'white')}
+            moves = basic_moves - (ahead_square + diag_square)
+        else
+            basic_moves = [Board.board[square_row + 1][square_col], Board.board[square_row + 1][square_col - 1], Board.board[square_row + 1][square_col + 1]]
+            ahead_square = vertical[0] if basic_moves.include?(vertical[0]) 
+            diag_square = diagonal[2..3].map{|blocked_square| blocked_square if (basic_moves.include?(blocked_square) && blocked_square.side == 'black')}
+            moves = basic_moves - (ahead_square + diag_square)
+        end
+        square.update_valid_moves(moves)
+    end
+
+    def find_occupied_squares_vertical(square)
+        square_row = square.position[0]
+        square_col = square.position[1]
+        toward_white_side = [0..7].each{|i| Board.square[square_row + i][square_col] if Board.square[square_row + i][square_col].piece != ' '} #If doesn't have blocked square returns nil?
+        toward_black_side = [0..7].each{|i| Board.square[square_row - i][square_col] if Board.square[square_row - i][square_col].piece != ' '}
+        [toward_white_side, toward_black_side]
+    end
+
+    def find_occupied_squares_diagonal(square)
+        square_row = square.position[0]
+        square_col = square.position[1]
+        toward_white_left_side = [0..7].each{|i| Board.square[square_row + i][square_col - i] if Board.square[square_row + i][square_col - i].piece != ' '}
+        toward_white_right_side = [0..7].each{|i| Board.square[square_row + i][square_col + i] if Board.square[square_row + i][square_col + i].piece != ' '}
+        toward_black_left_side = [0..7].each{|i| Board.square[square_row - i][square_col - i] if Board.square[square_row - i][square_col - i].piece != ' '}
+        toward_black_right_side = [0..7].each{|i| Board.square[square_row - i][square_col + i] if Board.square[square_row - i][square_col + i].piece != ' '}
+        [toward_white_left_side, toward_white_right_side, toward_black_left_side, toward_black_right_side]
+    end
 end
 
 module SquareAction
