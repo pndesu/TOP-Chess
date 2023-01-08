@@ -8,11 +8,10 @@ class Game
     include SquareAction
     def play
         board = Board.new
-        board.reset_board
         white = White.new
         black = Black.new
-        square = white.get_square('a3')
-        if check_valid_square?(square, 'white')
+        square = white.get_square('a2')
+        if (check_valid_side?(square, 'white') && check_valid_move?(square, get_square('a4')))
             white.move_to_new_square(square.position, 'a4')
         end
         white.move_to_new_square('b1', 'c3')

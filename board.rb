@@ -6,7 +6,7 @@ class Board
     def self.board
         @@board
     end
-    def reset_board
+    def initialize
         for i in 0..7
             row = []
             for j in 0..7
@@ -17,6 +17,7 @@ class Board
             end
             @@board << row
         end
+        assign_notation
     end
     
     def display_board(board = @@board)
@@ -25,6 +26,14 @@ class Board
                 print square.display_square
             end
             print "\n"
+        end
+    end
+
+    def assign_notation(board = @@board)
+        ['8','7','6','5','4','3','2','1'].each_with_index do |r_value, r_index|
+            ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'].each_with_index do |c_value, c_index|
+                board[r_index][c_index].position = c_value + r_value
+            end
         end
     end
 end

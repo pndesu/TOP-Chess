@@ -5,10 +5,18 @@ class Pawn
         @side = side
         if side == 'white'
             @symbol = '♙'
-            position.each{|square| Board.board[square[0]][square[1]].update_piece('♙', 'white')}
+            position.each do |square|
+                moves = [Board.board[square[0] - 1][square[1]], Board.board[square[0] - 2][square[1]]]
+                Board.board[square[0]][square[1]].update_piece('♙', 'white')
+                Board.board[square[0]][square[1]].update_valid_moves(moves)
+            end
         else
             @symbol = '♟︎'
-            position.each{|square| Board.board[square[0]][square[1]].update_piece('♟︎', 'black')}
+            position.each do |square|
+                moves = [Board.board[square[0] + 1][square[1]], Board.board[square[0] + 2][square[1]]]
+                Board.board[square[0]][square[1]].update_piece('♟︎', 'black')
+                Board.board[square[0]][square[1]].update_valid_moves(moves)
+            end
         end
     end
 end
@@ -18,10 +26,18 @@ class Knight
         @side = side
         if side == 'white'
             @symbol = '♘'
-            position.each{|square| Board.board[square[0]][square[1]].update_piece('♘', 'white')}
+            position.each do |square|
+                moves = [Board.board[square[0] - 2][square[1] - 1], Board.board[square[0] - 2][square[1] + 1]]
+                Board.board[square[0]][square[1]].update_piece('♘', 'white')
+                Board.board[square[0]][square[1]].update_valid_moves(moves)
+            end
         else
             @symbol = '♞'
-            position.each{|square| Board.board[square[0]][square[1]].update_piece('♞', 'black')}
+            position.each do |square|
+                moves = [Board.board[square[0] + 2][square[1] - 1], Board.board[square[0] + 2][square[1] + 1]]
+                Board.board[square[0]][square[1]].update_piece('♞', 'black')
+                Board.board[square[0]][square[1]].update_valid_moves(moves)
+            end
         end
     end
 end
@@ -31,10 +47,14 @@ class Bishop
         @side = side
         if side == 'white'
             @symbol = '♗'
-            position.each{|square| Board.board[square[0]][square[1]].update_piece('♗', 'white')}
+            position.each do |square|
+                Board.board[square[0]][square[1]].update_piece('♗', 'white')
+            end
         else
             @symbol = '♝'
-            position.each{|square| Board.board[square[0]][square[1]].update_piece('♝', 'black')}
+            position.each do |square|
+                Board.board[square[0]][square[1]].update_piece('♝', 'black')
+            end
         end
     end
 end
@@ -44,10 +64,14 @@ class Rook
         @side = side
         if side == 'white'
             @symbol = '♖'
-            position.each{|square| Board.board[square[0]][square[1]].update_piece('♖', 'white')}
+            position.each do |square|
+                Board.board[square[0]][square[1]].update_piece('♖', 'white')
+            end
         else
             @symbol = '♜'
-            position.each{|square| Board.board[square[0]][square[1]].update_piece('♜', 'black')}
+            position.each do |square|
+                Board.board[square[0]][square[1]].update_piece('♜', 'black')
+            end
         end
     end
 end
@@ -57,10 +81,14 @@ class Queen
         @side = side
         if side == 'white'
             @symbol = '♕'
-            position.each{|square| Board.board[square[0]][square[1]].update_piece('♕', 'white')}
+            position.each do |square|
+                Board.board[square[0]][square[1]].update_piece('♕', 'white')
+            end
         else
             @symbol = '♛'
-            position.each{|square| Board.board[square[0]][square[1]].update_piece('♛', 'black')}
+            position.each do |square|
+                Board.board[square[0]][square[1]].update_piece('♛', 'black')
+            end
         end
     end
 end
@@ -70,10 +98,14 @@ class King
         @side = side
         if side == 'white'
             @symbol = '♔'
-            position.each{|square| Board.board[square[0]][square[1]].update_piece('♔', 'white')}
+            position.each do |square|
+                Board.board[square[0]][square[1]].update_piece('♔', 'white')
+            end
         else
             @symbol = '♚'
-            position.each{|square| Board.board[square[0]][square[1]].update_piece('♚', 'black')}
+            position.each do |square|
+                Board.board[square[0]][square[1]].update_piece('♚', 'black')
+            end
         end
     end
 end

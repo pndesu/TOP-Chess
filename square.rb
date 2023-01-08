@@ -1,12 +1,13 @@
 require_relative 'board.rb'
 
 class Square
-    attr_accessor :color, :piece, :side, :position
-    def initialize(color, piece = ' ', side = '', position = '') #Is position necessary?
+    attr_accessor :color, :piece, :side, :position, :valid_moves
+    def initialize(color, piece = ' ', side = '', position = '', valid_moves = []) #Is position necessary?
         @color = color
         @piece = piece
         @side = side
         @position = position
+        @valid_moves = valid_moves
     end
 
     def display_square
@@ -18,6 +19,10 @@ class Square
         @piece = piece
         @side = side
         display_square
+    end
+
+    def update_valid_moves(moves)
+        @valid_moves = moves
     end
 
     def square_dark
