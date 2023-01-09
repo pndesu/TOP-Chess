@@ -1,8 +1,8 @@
 require_relative 'board.rb'
 
 class Square
-    attr_accessor :color, :piece, :side, :position, :valid_moves
-    def initialize(color, piece = ' ', side = '', notation = '', valid_moves = [], piece_name = '', position = [])
+    attr_accessor :color, :piece, :side, :position, :valid_moves, :piece_name, :notation
+    def initialize(color, piece = ' ', side = '', notation = '', valid_moves = [], piece_name = '', position: [])
         @color = color
         @piece = piece
         @side = side

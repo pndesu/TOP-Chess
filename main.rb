@@ -5,16 +5,20 @@ require_relative 'side.rb'
 require_relative 'piece.rb'
 
 class Game
-    include SquareAction
+    include PieceAction, SquareAction
     def play
         board = Board.new
         white = White.new
         black = Black.new
         square = white.get_square('a2')
         if (check_valid_side?(square, 'white') && check_valid_move?(square, get_square('a4')))
-            white.move_to_new_square(square.position, 'a4')
+            white.move_to_new_square(square.notation, 'a4')
         end
-        white.move_to_new_square('b1', 'c3')
+        square = white.get_square('a4')
+        find_valid_moves(square)
+        if (check_valid_side?(square, 'white') && check_valid_move?(square, get_square('a5')))
+            white.move_to_new_square(square.notation, 'a5')
+        end
         board.display_board
     end
 end

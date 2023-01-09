@@ -10,10 +10,10 @@ class Board
         for i in 0..7
             row = []
             for j in 0..7
-                row << Square.new('white', ' ', position = [i,j]) if i.odd? && j.odd? #Position only used here
-                row << Square.new('dark', ' ', position = [i,j]) if i.odd? && j.even?
-                row << Square.new('white', ' ', position = [i,j]) if i.even? && j.even?
-                row << Square.new('dark', ' ', position = [i,j]) if i.even? && j.odd?
+                row << Square.new('white', ' ', position: [i,j]) if i.odd? && j.odd? #Position only used here
+                row << Square.new('dark', ' ', position: [i,j]) if i.odd? && j.even?
+                row << Square.new('white', ' ', position: [i,j]) if i.even? && j.even?
+                row << Square.new('dark', ' ', position: [i,j]) if i.even? && j.odd?
             end
             @@board << row
         end
@@ -32,7 +32,7 @@ class Board
     def assign_notation(board = @@board)
         ['8','7','6','5','4','3','2','1'].each_with_index do |r_value, r_index|
             ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'].each_with_index do |c_value, c_index|
-                board[r_index][c_index].position = c_value + r_value
+                board[r_index][c_index].notation = c_value + r_value
             end
         end
     end

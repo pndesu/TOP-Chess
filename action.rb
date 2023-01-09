@@ -62,7 +62,7 @@ module PieceAction
     end
 
     def find_valid_moves(square)
-        case square.piece
+        case square.piece_name
         when 'pawn' then find_valid_pawn_moves(square)
         when 'knight' then find_valid_knight_moves(square)
         when 'bishop' then find_valid_bishop_moves(square)
@@ -75,11 +75,11 @@ module PieceAction
     def find_valid_pawn_moves(square)
         square_row = square.position[0]
         square_col = square.position[1]
-        vertical = find_occupied_squares_vertical
-        diagonal = find_occupied_squares_vertical
+        vertical = find_occupied_squares_vertical(square)
+        diagonal = find_occupied_squares_diagonal(square)
         if square.side == 'white'
             basic_moves = [Board.board[square_row - 1][square_col], Board.board[square_row - 1][square_col - 1], Board.board[square_row - 1][square_col + 1]]
-            ahead_square = vertical[1] if basic_moves.include?(vertical[1]) 
+            ahead_square = [vertical[1]].map{|blocked_square| blocked_square if basic_moves.include?(blocked_square)} 
             diag_square = diagonal[2..3].map{|blocked_square| blocked_square if (basic_moves.include?(blocked_square) && blocked_square.side == 'white')}
             moves = basic_moves - (ahead_square + diag_square)
         else
@@ -94,19 +94,25 @@ module PieceAction
     def find_occupied_squares_vertical(square)
         square_row = square.position[0]
         square_col = square.position[1]
-        toward_white_side = [0..7].each{|i| Board.square[square_row + i][square_col] if Board.square[square_row + i][square_col].piece != ' '} #If doesn't have blocked square returns nil?
-        toward_black_side = [0..7].each{|i| Board.square[square_row - i][square_col] if Board.square[square_row - i][square_col].piece != ' '}
-        [toward_white_side, toward_black_side]
+        toward_white_side = (1..7 - square_row).map{|i| Board.board[square_row + i][square_col] if Board.board[square_row + i][square_col].piece != ' '} #If doesn't have blocked square returns nil?
+        toward_black_side = (1..7 - square_row + 1).map{|i| Board.board[square_row - i][square_col] if Board.board[square_row - i][square_col].piece != ' '}
+        toward_white_side = toward_white_side.compact unless toward_white_side.all?{|x| x.nil?}
+        toward_black_side = toward_black_side.compact unless toward_black_side.all?{|x| x.nil?}
+        [toward_white_side[0], toward_black_side[0]]
     end
 
     def find_occupied_squares_diagonal(square)
         square_row = square.position[0]
         square_col = square.position[1]
-        toward_white_left_side = [0..7].each{|i| Board.square[square_row + i][square_col - i] if Board.square[square_row + i][square_col - i].piece != ' '}
-        toward_white_right_side = [0..7].each{|i| Board.square[square_row + i][square_col + i] if Board.square[square_row + i][square_col + i].piece != ' '}
-        toward_black_left_side = [0..7].each{|i| Board.square[square_row - i][square_col - i] if Board.square[square_row - i][square_col - i].piece != ' '}
-        toward_black_right_side = [0..7].each{|i| Board.square[square_row - i][square_col + i] if Board.square[square_row - i][square_col + i].piece != ' '}
-        [toward_white_left_side, toward_white_right_side, toward_black_left_side, toward_black_right_side]
+        toward_white_left_side = (1..[7 - square_row, square_col].min).map{|i| Board.board[square_row + i][square_col - i] if Board.board[square_row + i][square_col - i].piece != ' '}
+        toward_white_right_side = (1..[7 - square_row, 7 - square_col].min).map{|i| Board.board[square_row + i][square_col + i] if Board.board[square_row + i][square_col + i].piece != ' '}
+        toward_black_left_side = (1..[square_row, square_col].min).map{|i| Board.board[square_row - i][square_col - i] if Board.board[square_row - i][square_col - i].piece != ' '}
+        toward_black_right_side = (1..[square_row, 7 - square_col].min).map{|i| Board.board[square_row - i][square_col + i] if Board.board[square_row - i][square_col + i].piece != ' '}
+        toward_white_left_side = toward_white_left_side.compact unless toward_white_left_side.all?{|x| x.nil?}
+        toward_white_right_side = toward_white_right_side.compact unless toward_white_right_side.all?{|x| x.nil?}
+        toward_black_left_side = toward_black_left_side.compact unless toward_black_left_side.all?{|x| x.nil?}
+        toward_black_right_side = toward_black_right_side.compact unless toward_black_right_side.all?{|x| x.nil?}
+        [toward_white_left_side[0], toward_white_right_side[0], toward_black_left_side[0], toward_black_right_side[0]]
     end
 end
 
@@ -138,6 +144,7 @@ module SquareAction
         new_square = get_square(new_position)
         new_square.piece = old_square.piece
         new_square.side = old_square.side
+        new_square.piece_name = old_square.piece_name
         reset_square(old_square)
     end
 
