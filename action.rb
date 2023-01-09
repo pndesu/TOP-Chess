@@ -73,18 +73,20 @@ module PieceAction
     end
 
     def find_valid_pawn_moves(square, square_row = square.position[0], square_col = square.position[1]) #Lacking en passsant
-        vertical = find_occupied_squares_vertical(square)
-        diagonal = find_occupied_squares_diagonal(square)
+        # vertical = find_occupied_squares_vertical(square)
+        # diagonal = find_occupied_squares_diagonal(square)
         if square.side == 'white'
-            basic_moves = [Board.board[square_row - 1][square_col], Board.board[square_row - 1][square_col - 1], Board.board[square_row - 1][square_col + 1]]
-            ahead_square = [vertical[1]].map{|blocked_square| blocked_square if basic_moves.include?(blocked_square)} 
-            diag_square = diagonal[2..3].map{|blocked_square| blocked_square if (basic_moves.include?(blocked_square) && blocked_square.side == 'white')}
-            moves = basic_moves - (ahead_square + diag_square)
+            basic_moves = [Board.board[square_row - 1][square_col]]
+            basic_diagonal_moves = [Board.board[square_row - 1][square_col - 1], Board.board[square_row - 1][square_col + 1]]
+            ahead_square = basic_moves.map{|blocked_square| blocked_square if blocked_square.side != ''} 
+            diag_square = basic_diagonal_moves.map{|blocked_square| blocked_square if blocked_square.side == 'black'}
+            moves = basic_moves - ahead_square + diag_square
         else
-            basic_moves = [Board.board[square_row + 1][square_col], Board.board[square_row + 1][square_col - 1], Board.board[square_row + 1][square_col + 1]]
-            ahead_square = [vertical[0]].map{|blocked_square| blocked_square if basic_moves.include?(blocked_square)}
-            diag_square = diagonal[0..1].map{|blocked_square| blocked_square if (basic_moves.include?(blocked_square) && blocked_square.side == 'black')}
-            moves = basic_moves - (ahead_square + diag_square)
+            basic_moves = [Board.board[square_row + 1][square_col]]
+            basic_diagonal_moves = [Board.board[square_row + 1][square_col - 1], Board.board[square_row + 1][square_col + 1]]
+            ahead_square = basic_moves.map{|blocked_square| blocked_square if blocked_square.side != ''} 
+            diag_square = basic_diagonal_moves.map{|blocked_square| blocked_square if blocked_square.side == 'white'}
+            moves = basic_moves - ahead_square + diag_square
         end
         moves
     end
@@ -197,6 +199,29 @@ module PieceAction
         toward_right_side = (1..7).map{|i| Board.board[square_row][square_col + i] if (square_col + i).between?(1,7)}.compact
         [toward_left_side, toward_right_side]
     end
+
+    def to_create_enpassant?(old_square, new_square)
+        (old_square.piece_name == 'pawn' && (new_square.position[0] - old_square.position[0]).abs == 2)? true : false
+    end
+
+    def create_enpassant_square(square, square_row = square.position[0], square_col = square.position[1])
+        if square.side == 'white'
+            Board.board[square_row - 1][square_col].piece_name = 'enpassant_pawn'
+            Board.board[square_row - 1][square_col].side = 'white'
+        else
+            Board.board[square_row + 1][square_col].piece_name = 'enpassant_pawn'
+            Board.board[square_row + 1][square_col].side = 'black'
+        end
+        Board.board[square_row - 1][square_col]
+    end
+
+    def clear_enpassant_square(enpassant_pawn)
+        enpassant_pawn.map do |square|
+            square.piece_name = ''
+            square.side = ''
+        end
+        enpassant_pawn = []
+    end
 end
 
 module SquareAction
@@ -222,9 +247,7 @@ module SquareAction
         old_square.valid_moves.include?(new_square)? true : false
     end
 
-    def move_to_new_square(old_position, new_position)
-        old_square = get_square(old_position)
-        new_square = get_square(new_position)
+    def move_to_new_square(old_square, new_square)
         new_square.piece = old_square.piece
         new_square.side = old_square.side
         new_square.piece_name = old_square.piece_name

@@ -10,69 +10,81 @@ class Game
         board = Board.new
         white = White.new
         black = Black.new
+
         square = white.get_square('d2')
-
-        if (check_valid_side?(square, 'white') && check_valid_move?(square, get_square('d4')))
-            white.move_to_new_square(square.notation, 'd4')
+        target_square = get_square('d4')
+        if (check_valid_side?(square, 'white') && check_valid_move?(square, target_square)) #Code starts to get chunky, game class knows too much
+            unless (to_create_enpassant?(square, target_square))                            # (or action module is too stacked),
+                move_to_new_square(square, target_square)                                   # needs to refactor into better loop and design enpassant better
+            else
+                enpassant_pawn = create_enpassant_square(square)
+                clear_enpassant_square(white.enpassant_pawn)
+                white.enpassant_pawn << enpassant_pawn
+                move_to_new_square(square, target_square)
+            end
         end
 
-        square = black.get_square('d7')
-        if (check_valid_side?(square, 'black') && check_valid_move?(square, get_square('d5')))
-            black.move_to_new_square(square.notation, 'd5')
+        square = black.get_square('e7')
+        target_square = get_square('e5')
+        if (check_valid_side?(square, 'black') && check_valid_move?(square, target_square))
+            unless (to_create_enpassant?(square, target_square))
+                move_to_new_square(square, target_square)
+            else
+                create_enpassant_square(square)
+                move_to_new_square(square, target_square)
+            end
         end
 
-        square = white.get_square('c1')
+        square = white.get_square('d4')
+        target_square = get_square('d5')
         moves = find_valid_moves(square)
         square.update_valid_moves(moves)
-        if (check_valid_side?(square, 'white') && check_valid_move?(square, get_square('f4')))
-            white.move_to_new_square(square.notation, 'f4')
+        if (check_valid_side?(square, 'white') && check_valid_move?(square, target_square))
+            unless (to_create_enpassant?(square, target_square))
+                move_to_new_square(square, target_square)
+            else
+                create_enpassant_square(square)
+                move_to_new_square(square, target_square)
+            end
         end
 
-        square = black.get_square('g8')
+        square = black.get_square('e5')
+        target_square = get_square('e4')
         moves = find_valid_moves(square)
         square.update_valid_moves(moves)
-        if (check_valid_side?(square, 'black') && check_valid_move?(square, get_square('f6')))
-            black.move_to_new_square(square.notation, 'f6')
+        if (check_valid_side?(square, 'black') && check_valid_move?(square, target_square))
+            unless (to_create_enpassant?(square, target_square))
+                move_to_new_square(square, target_square)
+            else
+                create_enpassant_square(square)
+                move_to_new_square(square, target_square)
+            end
         end
 
-        square = white.get_square('f4')
+        square = white.get_square('d5')
+        target_square = get_square('e6')
         moves = find_valid_moves(square)
         square.update_valid_moves(moves)
-        if (check_valid_side?(square, 'white') && check_valid_move?(square, get_square('c7')))
-            white.move_to_new_square(square.notation, 'c7')
+        if (check_valid_side?(square, 'white') && check_valid_move?(square, target_square))
+            unless (to_create_enpassant?(square, target_square))
+                move_to_new_square(square, target_square)
+            else
+                create_enpassant_square(square)
+                move_to_new_square(square, target_square)
+            end
         end
 
-        square = black.get_square('h8')
+        square = black.get_square('e4')
+        target_square = get_square('f3')
         moves = find_valid_moves(square)
         square.update_valid_moves(moves)
-        if (check_valid_side?(square, 'black') && check_valid_move?(square, get_square('g8')))
-            black.move_to_new_square(square.notation, 'g8')
-        end
-
-        square = white.get_square('c7')
-        moves = find_valid_moves(square)
-        square.update_valid_moves(moves)
-        if (check_valid_side?(square, 'white') && check_valid_move?(square, get_square('d8')))
-            white.move_to_new_square(square.notation, 'd8')
-        end
-
-        square = black.get_square('e8')
-        moves = find_valid_moves(square)
-        square.update_valid_moves(moves)
-        if (check_valid_side?(square, 'black') && check_valid_move?(square, get_square('d8')))
-            black.move_to_new_square(square.notation, 'd8')
-        end
-
-        square = white.get_square('e2')
-        if (check_valid_side?(square, 'white') && check_valid_move?(square, get_square('e4')))
-            white.move_to_new_square(square.notation, 'e4')
-        end
-
-        square = black.get_square('d5')
-        moves = find_valid_moves(square)
-        square.update_valid_moves(moves)
-        if (check_valid_side?(square, 'black') && check_valid_move?(square, get_square('e4')))
-            black.move_to_new_square(square.notation, 'e4')
+        if (check_valid_side?(square, 'black') && check_valid_move?(square, target_square))
+            unless (to_create_enpassant?(square, target_square))
+                move_to_new_square(square, target_square)
+            else
+                create_enpassant_square(square)
+                move_to_new_square(square, target_square)
+            end
         end
 
         board.display_board
