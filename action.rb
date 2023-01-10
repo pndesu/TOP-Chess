@@ -41,8 +41,6 @@ module PieceAction
     # end
 
     def find_valid_pawn_moves(square, square_row = square.position[0], square_col = square.position[1]) #Lacking en passsant
-        # vertical = find_occupied_squares_vertical(square)
-        # diagonal = find_occupied_squares_diagonal(square)
         if square.piece.side == 'white'
             basic_moves = [Board.board[square_row - 1][square_col]]
             basic_diagonal_moves = [Board.board[square_row - 1][square_col - 1], Board.board[square_row - 1][square_col + 1]]
@@ -168,27 +166,16 @@ module PieceAction
         [toward_left_side, toward_right_side]
     end
 
-    # def to_create_enpassant?(old_square, new_square)
-    #     (old_square.piece_name == 'pawn' && (new_square.position[0] - old_square.position[0]).abs == 2)? true : false
-    # end
+    def pieces_checking_king(side)
+        checking_pieces = Black.pieces.select{|piece| piece.valid_moves.include?(White.pieces[0].position)} if side == 'white'
+        checking_pieces = White.pieces.select{|piece| piece.valid_moves.include?(Black.pieces[0].position)} if side == 'black'
+        checking_pieces
+    end
 
-    # def create_enpassant_square(square, square_row = square.position[0], square_col = square.position[1])
-    #     if square.side == 'white'
-    #         Board.board[square_row - 1][square_col].piece_name = 'enpassant_pawn'
-    #         Board.board[square_row - 1][square_col].side = 'white'
-    #     else
-    #         Board.board[square_row + 1][square_col].piece_name = 'enpassant_pawn'
-    #         Board.board[square_row + 1][square_col].side = 'black'
-    #     end
-    #     Board.board[square_row - 1][square_col]
-    # end
-
-    # def clear_enpassant_square(enpassant_pawn)
-    #     enpassant_pawn.each do |square|
-    #         square.piece_name = ''
-    #         square.side = ''
-    #     end
-    # end
+    def in_check?(side)
+        checking_pieces = pieces_checking_king(side)
+        (checking_pieces.length > 0) ? true : false
+    end
 end
 
 module SquareAction
@@ -215,10 +202,21 @@ module SquareAction
     end
 
     def move_to_new_square(old_square, new_square)
-        Board.board[new_square.position[0] + 1][new_square.position[1]].piece = nil if old_square.piece.instance_of?(Pawn) && old_square.piece.side == 'white' && new_square.piece.instance_of?(EnPassant)
-        Board.board[new_square.position[0] - 1][new_square.position[1]].piece = nil if old_square.piece.instance_of?(Pawn) && old_square.piece.side == 'black' && new_square.piece.instance_of?(EnPassant)
+        if old_square.piece.instance_of?(Pawn) && old_square.piece.side == 'white' && new_square.piece.instance_of?(EnPassant)
+            Black.pieces.delete_at(Black.pieces.find_index(Board.board[new_square.position[0] + 1][new_square.position[1]].piece))
+            Board.board[new_square.position[0] + 1][new_square.position[1]].piece = nil 
+        end
+        if old_square.piece.instance_of?(Pawn) && old_square.piece.side == 'black' && new_square.piece.instance_of?(EnPassant)
+            White.pieces.delete_at(White.pieces.find_index(Board.board[new_square.position[0] - 1][new_square.position[1]].piece))
+            Board.board[new_square.position[0] - 1][new_square.position[1]].piece = nil 
+        end
+        if new_square.piece != nil
+            White.pieces.delete(White.pieces.find(new_square.piece)) if new_square.piece.side == 'white'
+            Black.pieces.delete(Black.pieces.find(new_square.piece)) if new_square.piece.side == 'black'
+        end
         new_square.piece = old_square.piece
         new_square.piece.on_square = new_square
+        new_square.piece.position = new_square.position
         old_square.piece = nil
     end
 

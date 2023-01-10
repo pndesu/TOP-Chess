@@ -1,8 +1,8 @@
 require_relative 'action.rb'
 
 class White
-    attr_accessor :enpassant_pawn
     include PieceAction, SquareAction
+    @@pieces = []
     def initialize
         spawn_pawn('white')
         spawn_knight('white')
@@ -10,13 +10,23 @@ class White
         spawn_rook('white')
         spawn_queen('white')
         spawn_king('white')
-        @enpassant_pawn = []
+        @@pieces << Board.board[7][4].piece
+        for i in 6..7
+            for j in 0..7
+                next if i == 7 && j == 4
+                @@pieces << Board.board[i][j].piece
+            end
+        end
+    end
+
+    def self.pieces
+        @@pieces
     end
 end
 
 class Black
-    attr_accessor :enpassant_pawn
     include PieceAction, SquareAction
+    @@pieces = []
     def initialize
         spawn_pawn('black')
         spawn_knight('black')
@@ -24,6 +34,16 @@ class Black
         spawn_rook('black')
         spawn_queen('black')
         spawn_king('black')
-        @enpassant_pawn = []
+        @@pieces << Board.board[0][4].piece
+        for i in [1,0]
+            for j in 0..7
+                next if i == 0 && j ==4
+                @@pieces << Board.board[i][j].piece
+            end
+        end
+    end
+
+    def self.pieces
+        @@pieces
     end
 end

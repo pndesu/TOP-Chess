@@ -11,6 +11,7 @@ class Game
         white = White.new
         black = Black.new
 
+        white_pieces =White.pieces
         square = white.get_square('d2')
         target_square = get_square('d4')
         square.piece.update_valid_moves
@@ -87,7 +88,7 @@ class Game
         old_board = Psych.unsafe_load(File.read("old_board.yml"))
         new_board = Board.board
         check_board_for_enpassant(old_board, new_board)
-        
+
         board.display_board
     end
 end

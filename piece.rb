@@ -3,7 +3,7 @@ require_relative 'action.rb'
 
 class Pawn
     include PieceAction
-    attr_accessor :side, :piece_symbol, :valid_moves, :on_square, :have_moved
+    attr_accessor :side, :piece_symbol, :valid_moves, :on_square, :have_moved, :position
     def initialize(side:, piece_symbol: ' ', valid_moves: [], on_square:, have_moved: 0)
         @side = side
         @piece_symbol = piece_symbol

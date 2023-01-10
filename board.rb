@@ -1,12 +1,13 @@
 require_relative 'square.rb'
 
 class Board
-    attr_accessor :board
+    attr_accessor :board, :king_position
     @@board = []
+    
     def self.board
         @@board
     end
-    
+
     def initialize
         for i in 0..7
             row = []
