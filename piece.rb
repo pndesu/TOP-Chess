@@ -1,111 +1,119 @@
 require_relative 'board.rb'
+require_relative 'action.rb'
 
 class Pawn
-    def initialize(side, position = [])
+    include PieceAction
+    attr_accessor :side, :piece_symbol, :valid_moves, :on_square, :have_moved
+    def initialize(side:, piece_symbol: ' ', valid_moves: [], on_square:, have_moved: 0)
         @side = side
-        if side == 'white'
-            @symbol = '♙'
-            position.each do |square|
-                moves = [Board.board[square[0] - 1][square[1]], Board.board[square[0] - 2][square[1]]]
-                Board.board[square[0]][square[1]].update_piece('♙', 'pawn', 'white')
-                Board.board[square[0]][square[1]].update_valid_moves(moves)
-            end
+        @piece_symbol = piece_symbol
+        @on_square = on_square
+        @position = on_square.position
+        @have_moved = have_moved
+        @valid_moves = valid_moves
+    end
+
+    def update_valid_moves(on_square: @on_square)
+        if have_moved == 0
+            @valid_moves = [Board.board[on_square.position[0] - 1][on_square.position[1]], 
+                            Board.board[on_square.position[0] - 2][on_square.position[1]]] if side == 'white'
+            @valid_moves = [Board.board[on_square.position[0] + 1][on_square.position[1]], 
+                            Board.board[on_square.position[0] + 2][on_square.position[1]]] if side == 'black'
+            @have_moved = 1
         else
-            @symbol = '♟︎'
-            position.each do |square|
-                moves = [Board.board[square[0] + 1][square[1]], Board.board[square[0] + 2][square[1]]]
-                Board.board[square[0]][square[1]].update_piece('♟︎', 'pawn', 'black')
-                Board.board[square[0]][square[1]].update_valid_moves(moves)
-            end
+            @valid_moves = find_valid_pawn_moves(on_square)
         end
     end
 end
 
 class Knight
-    def initialize(side, position = [])
+    include PieceAction
+    attr_accessor :side, :piece_symbol, :valid_moves, :on_square
+    def initialize(side:, piece_symbol:, valid_moves: [], on_square:)
         @side = side
-        if side == 'white'
-            @symbol = '♘'
-            position.each do |square|
-                moves = [Board.board[square[0] - 2][square[1] - 1], Board.board[square[0] - 2][square[1] + 1]]
-                Board.board[square[0]][square[1]].update_piece('♘', 'knight', 'white')
-                Board.board[square[0]][square[1]].update_valid_moves(moves)
-            end
-        else
-            @symbol = '♞'
-            position.each do |square|
-                moves = [Board.board[square[0] + 2][square[1] - 1], Board.board[square[0] + 2][square[1] + 1]]
-                Board.board[square[0]][square[1]].update_piece('♞', 'knight', 'black')
-                Board.board[square[0]][square[1]].update_valid_moves(moves)
-            end
-        end
+        @piece_symbol = piece_symbol
+        @on_square = on_square
+        @position = on_square.position
+        @valid_moves = valid_moves
+    end
+
+    def update_valid_moves(on_square: @on_square)
+        @valid_moves = find_valid_knight_moves(on_square)
     end
 end
 
 class Bishop
-    def initialize(side, position = [])
+    include PieceAction
+    attr_accessor :side, :piece_symbol, :valid_moves, :on_square
+    def initialize(side:, piece_symbol: ' ', valid_moves: [], on_square:)
         @side = side
-        if side == 'white'
-            @symbol = '♗'
-            position.each do |square|
-                Board.board[square[0]][square[1]].update_piece('♗', 'bishop', 'white')
-            end
-        else
-            @symbol = '♝'
-            position.each do |square|
-                Board.board[square[0]][square[1]].update_piece('♝', 'bishop', 'black')
-            end
-        end
+        @piece_symbol = piece_symbol
+        @on_square = on_square
+        @position = on_square.position
+        @valid_moves = valid_moves
+    end
+
+    def update_valid_moves(on_square: @on_square)
+        @valid_moves = find_valid_bishop_moves(on_square)
     end
 end
 
 class Rook
-    def initialize(side, position = [])
+    include PieceAction
+    attr_accessor :side, :piece_symbol, :valid_moves, :on_square, :have_moved
+    def initialize(side:, piece_symbol: ' ', valid_moves: [], on_square:, have_moved: 0)
         @side = side
-        if side == 'white'
-            @symbol = '♖'
-            position.each do |square|
-                Board.board[square[0]][square[1]].update_piece('♖', 'rook', 'white')
-            end
-        else
-            @symbol = '♜'
-            position.each do |square|
-                Board.board[square[0]][square[1]].update_piece('♜', 'rook', 'black')
-            end
-        end
+        @piece_symbol = piece_symbol
+        @on_square = on_square
+        @position = on_square.position
+        @have_moved = have_moved
+        @valid_moves = valid_moves
+    end
+
+    def update_valid_moves(on_square: @on_square)
+        @valid_moves = find_valid_rook_moves(on_square)
     end
 end
 
 class Queen
-    def initialize(side, position = [])
+    include PieceAction
+    attr_accessor :side, :piece_symbol, :valid_moves, :on_square
+    def initialize(side:, piece_symbol: ' ', valid_moves: [], on_square:)
         @side = side
-        if side == 'white'
-            @symbol = '♕'
-            position.each do |square|
-                Board.board[square[0]][square[1]].update_piece('♕', 'queen', 'white')
-            end
+        @piece_symbol = piece_symbol
+        @on_square = on_square
+        @position = on_square.position
+        @valid_moves = valid_moves
+    end
+
+    def update_valid_moves(on_square: @on_square)
+        if have_moved == 0
+            @valid_moves = find_valid_queen_moves(on_square)
+            have_moved = 1
         else
-            @symbol = '♛'
-            position.each do |square|
-                Board.board[square[0]][square[1]].update_piece('♛', 'queen', 'black')
-            end
+            @valid_moves = find_valid_queen_moves(on_square)
         end
     end
 end
 
 class King
-    def initialize(side, position = [])
+    include PieceAction
+    attr_accessor :side, :piece_symbol, :valid_moves, :on_square, :have_moved
+    def initialize(side:, piece_symbol: ' ', valid_moves: [], on_square:, have_moved: 0)
         @side = side
-        if side == 'white'
-            @symbol = '♔'
-            position.each do |square|
-                Board.board[square[0]][square[1]].update_piece('♔', 'king', 'white')
-            end
+        @piece_symbol = piece_symbol
+        @on_square = on_square
+        @position = on_square.position
+        @have_moved = have_moved
+        @valid_moves = valid_moves
+    end
+
+    def update_valid_moves(on_square: @on_square)
+        if have_moved == 0
+            @valid_moves = find_valid_king_moves(on_square)
+            have_moved = 1
         else
-            @symbol = '♚'
-            position.each do |square|
-                Board.board[square[0]][square[1]].update_piece('♚', 'king', 'black')
-            end
+            @valid_moves = find_valid_king_moves(on_square)
         end
     end
 end

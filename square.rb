@@ -1,15 +1,12 @@
 require_relative 'board.rb'
 
 class Square
-    attr_accessor :color, :piece, :side, :position, :valid_moves, :piece_name, :notation
-    def initialize(color, piece = ' ', side = '', notation = '', valid_moves = [], piece_name = '', position: [])
-        @color = color
+    attr_accessor :color, :piece, :position, :notation
+    def initialize(color:, piece: nil, position: [], notation: '') #Give more responsibility to piece class, piece class instance should have more attributes
+        @color = color                                                                                              
         @piece = piece
-        @side = side
-        @notation = notation
-        @valid_moves = valid_moves
-        @piece_name = piece_name
         @position = position
+        @notation = notation #Just for debugging and readability
     end
 
     def display_square
@@ -24,17 +21,11 @@ class Square
         display_square
     end
 
-    def update_valid_moves(moves)
-        @valid_moves = moves
-    end
-
     def square_dark
-        # "\u001b[48;5;95m #{@piece} \u001b[0m"
-        "\e[46m #{@piece} \e[0m"
+        (@piece == nil)? "\e[46m   \e[0m" : "\e[46m #{@piece.piece_symbol} \e[0m"
     end
     
     def square_white
-        # "\u001b[48;5;223m #{@piece} \u001b[0m"
-        "\e[47m #{@piece} \e[0m"
+        (@piece == nil)? "\e[47m   \e[0m" : "\e[47m #{@piece.piece_symbol} \e[0m"
     end
 end
