@@ -14,13 +14,6 @@ class Square
         return square_white if color == 'white'
     end
 
-    def update_piece(piece, piece_name, side) #Update piece symbol, piece name and its side on square
-        @piece = piece
-        @piece_name = piece_name
-        @side = side
-        display_square
-    end
-
     def square_dark
         (@piece == nil)? "\e[46m   \e[0m" : "\e[46m #{@piece.piece_symbol} \e[0m"
     end

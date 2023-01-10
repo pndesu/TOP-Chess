@@ -6,6 +6,7 @@ class Board
     def self.board
         @@board
     end
+    
     def initialize
         for i in 0..7
             row = []

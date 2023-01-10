@@ -16,13 +16,25 @@ class Pawn
     def update_valid_moves(on_square: @on_square)
         if have_moved == 0
             @valid_moves = [Board.board[on_square.position[0] - 1][on_square.position[1]], 
-                            Board.board[on_square.position[0] - 2][on_square.position[1]]] if side == 'white'
+                            Board.board[on_square.position[0] - 2][on_square.position[1]],
+                            Board.board[on_square.position[0] - 1][on_square.position[1] - 1],
+                            Board.board[on_square.position[0] - 1][on_square.position[1] + 1]] if side == 'white'
             @valid_moves = [Board.board[on_square.position[0] + 1][on_square.position[1]], 
-                            Board.board[on_square.position[0] + 2][on_square.position[1]]] if side == 'black'
+                            Board.board[on_square.position[0] + 2][on_square.position[1]],
+                            Board.board[on_square.position[0] + 1][on_square.position[1] - 1],
+                            Board.board[on_square.position[0] + 1][on_square.position[1] + 1]] if side == 'black'
             @have_moved = 1
-        else
+        elsif have_moved == 1
             @valid_moves = find_valid_pawn_moves(on_square)
         end
+    end
+end
+
+class EnPassant
+    attr_accessor :side, :piece_symbol
+    def initialize(side:, piece_symbol: ' ')
+        @side = side
+        @piece_symbol = piece_symbol
     end
 end
 

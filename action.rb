@@ -29,16 +29,16 @@ module PieceAction
         [[0,4]].each{|i| Board.board[i[0]][i[1]].piece = King.new(side: side, piece_symbol: '♚', on_square: Board.board[i[0]][i[1]])} if side == 'black'
     end
 
-    def find_valid_moves(square)
-        case square.piece
-        when Pawn then find_valid_pawn_moves(square)
-        when Knight then find_valid_knight_moves(square)
-        when Bishop then find_valid_bishop_moves(square)
-        when Rook then find_valid_rook_moves(square)
-        when Queen then find_valid_queen_moves(square)
-        when King then find_valid_king_moves(square)
-        end
-    end
+    # def find_valid_moves(square)
+    #     case square.piece
+    #     when Pawn then find_valid_pawn_moves(square)
+    #     when Knight then find_valid_knight_moves(square)
+    #     when Bishop then find_valid_bishop_moves(square)
+    #     when Rook then find_valid_rook_moves(square)
+    #     when Queen then find_valid_queen_moves(square)
+    #     when King then find_valid_king_moves(square)
+    #     end
+    # end
 
     def find_valid_pawn_moves(square, square_row = square.position[0], square_col = square.position[1]) #Lacking en passsant
         # vertical = find_occupied_squares_vertical(square)
@@ -119,8 +119,8 @@ module PieceAction
 
     def find_occupied_squares_vertical(square, square_row = square.position[0], square_col = square.position[1])
         vertical_squares = find_squares_vertical(square)
-        toward_white_side = vertical_squares[0].map{|square| square if (square != nil && square.piece != nil)} #If doesn't have blocked square returns nil?
-        toward_black_side = vertical_squares[1].map{|square| square if (square != nil && square.piece != nil)}
+        toward_white_side = vertical_squares[0].map{|square| square if (square != nil && square.piece != nil && !square.piece.instance_of?(EnPassant))} #If doesn't have blocked square returns nil?
+        toward_black_side = vertical_squares[1].map{|square| square if (square != nil && square.piece != nil && !square.piece.instance_of?(EnPassant))}
         toward_white_side = toward_white_side.compact unless toward_white_side.all?{|x| x.nil?}
         toward_black_side = toward_black_side.compact unless toward_black_side.all?{|x| x.nil?}
         [toward_white_side[0], toward_black_side[0]]
@@ -128,10 +128,10 @@ module PieceAction
 
     def find_occupied_squares_diagonal(square, square_row = square.position[0], square_col = square.position[1])
         diagonal_squares = find_squares_diagonal(square)
-        toward_white_left_side = diagonal_squares[0].map{|square| square if (square != nil && square.piece != nil)}
-        toward_white_right_side = diagonal_squares[1].map{|square| square if (square != nil && square.piece != nil)}
-        toward_black_left_side = diagonal_squares[2].map{|square| square if (square != nil && square.piece != nil)}
-        toward_black_right_side = diagonal_squares[3].map{|square| square if (square != nil && square.piece != nil)}
+        toward_white_left_side = diagonal_squares[0].map{|square| square if (square != nil && square.piece != nil && !square.piece.instance_of?(EnPassant))}
+        toward_white_right_side = diagonal_squares[1].map{|square| square if (square != nil && square.piece != nil && !square.piece.instance_of?(EnPassant))}
+        toward_black_left_side = diagonal_squares[2].map{|square| square if (square != nil && square.piece != nil && !square.piece.instance_of?(EnPassant))}
+        toward_black_right_side = diagonal_squares[3].map{|square| square if (square != nil && square.piece != nil && !square.piece.instance_of?(EnPassant))}
         toward_white_left_side = toward_white_left_side.compact unless toward_white_left_side.all?{|x| x.nil?}
         toward_white_right_side = toward_white_right_side.compact unless toward_white_right_side.all?{|x| x.nil?}
         toward_black_left_side = toward_black_left_side.compact unless toward_black_left_side.all?{|x| x.nil?}
@@ -141,8 +141,8 @@ module PieceAction
 
     def find_occupied_squares_horizontal(square, square_row = square.position[0], square_col = square.position[1])
         horizontal_squares = find_squares_horizontal(square)
-        toward_left_side = horizontal_squares[0].map{|square| square if (square != nil && square.piece != nil)} #If doesn't have blocked square returns nil?
-        toward_right_side = horizontal_squares[1].map{|square| square if (square != nil && square.piece != nil)}
+        toward_left_side = horizontal_squares[0].map{|square| square if (square != nil && square.piece != nil && !square.piece.instance_of?(EnPassant))} #If doesn't have blocked square returns nil?
+        toward_right_side = horizontal_squares[1].map{|square| square if (square != nil && square.piece != nil && !square.piece.instance_of?(EnPassant))}
         toward_left_side = toward_left_side.compact unless toward_left_side.all?{|x| x.nil?}
         toward_right_side = toward_right_side.compact unless toward_right_side.all?{|x| x.nil?}
         [toward_left_side[0], toward_right_side[0]]
@@ -192,7 +192,7 @@ module PieceAction
 end
 
 module SquareAction
-    def get_square(position)git 
+    def get_square(position)
         x_axis = ['8', '7', '6', '5', '4', '3', '2', '1']
         y_axis = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
         position = position.split('')
@@ -215,8 +215,26 @@ module SquareAction
     end
 
     def move_to_new_square(old_square, new_square)
+        Board.board[new_square.position[0] + 1][new_square.position[1]].piece = nil if old_square.piece.instance_of?(Pawn) && old_square.piece.side == 'white' && new_square.piece.instance_of?(EnPassant)
+        Board.board[new_square.position[0] - 1][new_square.position[1]].piece = nil if old_square.piece.instance_of?(Pawn) && old_square.piece.side == 'black' && new_square.piece.instance_of?(EnPassant)
         new_square.piece = old_square.piece
         new_square.piece.on_square = new_square
         old_square.piece = nil
+    end
+
+    def check_board_for_enpassant(old_board, new_board)
+        (0..7).each do |i| 
+            Board.board[5][i].piece = nil if Board.board[5][i].piece.instance_of?(EnPassant)
+            if old_board[6][i].piece.instance_of?(Pawn) && new_board[4][i].piece.instance_of?(Pawn) && new_board[5][i].piece == nil && old_board[6][i].piece.side == new_board[4][i].piece.side
+                Board.board[5][i].piece = EnPassant.new(side: 'white')
+            end
+        end
+
+        (0..7).each do |i|
+            Board.board[2][i].piece = nil if Board.board[2][i].piece.instance_of?(EnPassant)
+            if old_board[1][i].piece.instance_of?(Pawn) && new_board[3][i].piece.instance_of?(Pawn) && new_board[2][i].piece == nil && old_board[1][i].piece.side == new_board[3][i].piece.side
+                Board.board[2][i].piece = EnPassant.new(side: 'black')
+            end
+        end
     end
 end
