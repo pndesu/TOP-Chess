@@ -40,7 +40,7 @@ end
 
 class Knight
     include PieceAction
-    attr_accessor :side, :piece_symbol, :valid_moves, :on_square
+    attr_accessor :side, :piece_symbol, :valid_moves, :on_square, :position
     def initialize(side:, piece_symbol:, valid_moves: [], on_square:)
         @side = side
         @piece_symbol = piece_symbol
@@ -56,7 +56,7 @@ end
 
 class Bishop
     include PieceAction
-    attr_accessor :side, :piece_symbol, :valid_moves, :on_square
+    attr_accessor :side, :piece_symbol, :valid_moves, :on_square, :position
     def initialize(side:, piece_symbol: ' ', valid_moves: [], on_square:)
         @side = side
         @piece_symbol = piece_symbol
@@ -72,7 +72,7 @@ end
 
 class Rook
     include PieceAction
-    attr_accessor :side, :piece_symbol, :valid_moves, :on_square, :have_moved
+    attr_accessor :side, :piece_symbol, :valid_moves, :on_square, :have_moved, :position
     def initialize(side:, piece_symbol: ' ', valid_moves: [], on_square:, have_moved: 0)
         @side = side
         @piece_symbol = piece_symbol
@@ -89,7 +89,7 @@ end
 
 class Queen
     include PieceAction
-    attr_accessor :side, :piece_symbol, :valid_moves, :on_square
+    attr_accessor :side, :piece_symbol, :valid_moves, :on_square, :position
     def initialize(side:, piece_symbol: ' ', valid_moves: [], on_square:)
         @side = side
         @piece_symbol = piece_symbol
@@ -110,7 +110,7 @@ end
 
 class King
     include PieceAction
-    attr_accessor :side, :piece_symbol, :valid_moves, :on_square, :have_moved
+    attr_accessor :side, :piece_symbol, :valid_moves, :on_square, :have_moved, :position
     def initialize(side:, piece_symbol: ' ', valid_moves: [], on_square:, have_moved: 0)
         @side = side
         @piece_symbol = piece_symbol

@@ -167,8 +167,8 @@ module PieceAction
     end
 
     def pieces_checking_king(side)
-        checking_pieces = Black.pieces.select{|piece| piece.valid_moves.include?(White.pieces[0].position)} if side == 'white'
-        checking_pieces = White.pieces.select{|piece| piece.valid_moves.include?(Black.pieces[0].position)} if side == 'black'
+        checking_pieces = Black.pieces.select{|piece| piece.valid_moves.include?(White.pieces[0].on_square)} if side == 'white'
+        checking_pieces = White.pieces.select{|piece| piece.valid_moves.include?(Black.pieces[0].on_square)} if side == 'black'
         checking_pieces
     end
 

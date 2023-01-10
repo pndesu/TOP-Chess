@@ -89,6 +89,20 @@ class Game
         new_board = Board.board
         check_board_for_enpassant(old_board, new_board)
 
+        square = white.get_square('f1')
+        target_square = get_square('b5')
+        square.piece.update_valid_moves
+        File.open("old_board.yml", "w"){|file| file.write(Board.board.to_yaml)}
+        move_to_new_square(square, target_square) if (check_valid_side?(square, 'white') && check_valid_move?(square, target_square))
+        old_board = Psych.unsafe_load(File.read("old_board.yml"))
+        new_board = Board.board
+        check_board_for_enpassant(old_board, new_board)
+
+        a = target_square.piece #Update piece valid move before otherwise when piece moves to new square old valid moves remain
+
+        target_square.piece.update_valid_moves
+        p in_check?('black')
+
         board.display_board
     end
 end
