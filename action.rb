@@ -88,8 +88,9 @@ module PieceAction
         vertical_horizontal_squares = (vertical_squares + horizontal_squares)
         occupied_vertical_horizontal_squares = find_occupied_squares_vertical(square) + find_occupied_squares_horizontal(square)
         basic_moves = vertical_horizontal_squares.each_with_index
-                                                 .map{|direction, index| direction = direction[..direction.find_index(occupied_vertical_horizontal_squares[index])]}
+                                                 .map{|direction, index| direction = direction[..direction.find_index(occupied_vertical_horizontal_squares[index])].compact}
                                                  .reject{|direction| direction.length == 0 || direction.length == 1 && direction[0] == nil}
+                                                 .compact
         if square.piece.side == 'white'
             moves = basic_moves.map{|direction| (direction[-1].piece != nil && direction[-1].piece.side == 'white')? direction[..-2] : direction}.flatten
         else
@@ -173,8 +174,19 @@ module PieceAction
     end
 
     def in_check?(side)
-        checking_pieces = pieces_checking_king(side)
-        (checking_pieces.length > 0) ? true : false
+        (pieces_checking_king(side).length > 0) ? true : false
+    end
+
+    def checkmate?(side)
+        
+    end
+
+    def squares_in_check(side) #Basically all valid squares for white, maybe should check if king's moves are in white valid moves
+
+    end
+
+    def check_valid_move?(side) #Check if a move will not put king in check(block check, capture checking piece, not moving out of pin, king move out of double check)
+
     end
 end
 
@@ -197,7 +209,7 @@ module SquareAction
         (square.piece.side == side)? true : false
     end
 
-    def check_valid_move?(old_square, new_square)
+    def check_valid_piece_move?(old_square, new_square)
         old_square.piece.valid_moves.include?(new_square)? true : false
     end
 
@@ -234,5 +246,13 @@ module SquareAction
                 Board.board[2][i].piece = EnPassant.new(side: 'black')
             end
         end
+    end
+end
+
+module Display
+    def ErrorMessage(message)
+        {
+            'invalid_move' => "Please enter a valid move!"
+        }[message]
     end
 end

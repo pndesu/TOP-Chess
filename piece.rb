@@ -99,12 +99,7 @@ class Queen
     end
 
     def update_valid_moves(on_square: @on_square)
-        if have_moved == 0
-            @valid_moves = find_valid_queen_moves(on_square)
-            have_moved = 1
-        else
-            @valid_moves = find_valid_queen_moves(on_square)
-        end
+        @valid_moves = find_valid_queen_moves(on_square)
     end
 end
 

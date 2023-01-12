@@ -21,6 +21,10 @@ class Board
         end
         assign_notation
     end
+
+    def update_board(board)
+        @@board = board
+    end
     
     def display_board(board = @@board)
         board.each do |row|
