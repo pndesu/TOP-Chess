@@ -22,6 +22,10 @@ class White
     def self.pieces
         @@pieces
     end
+
+    def update_piece(piece)
+        @@pieces = piece
+    end
 end
 
 class Black
@@ -45,5 +49,9 @@ class Black
 
     def self.pieces
         @@pieces
+    end
+
+    def update_piece(piece)
+        @@pieces = piece
     end
 end

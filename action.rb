@@ -43,7 +43,7 @@ module PieceAction
     def find_valid_pawn_moves(square, square_row = square.position[0], square_col = square.position[1]) #Lacking en passsant
         if square.piece.side == 'white'
             basic_moves = [Board.board[square_row - 1][square_col]]
-            basic_diagonal_moves = [Board.board[square_row - 1][square_col - 1], Board.board[square_row - 1][square_col + 1]]
+            basic_diagonal_moves = [Board.board[square_row - 1][square_col - 1], Board.board[square_row - 1][square_col + 1]].compact
             ahead_square = basic_moves.map{|blocked_square| blocked_square if blocked_square.piece != nil} 
             diag_square = basic_diagonal_moves.map{|blocked_square| blocked_square if (blocked_square.piece != nil && blocked_square.piece.side == 'black')}
             moves = basic_moves - ahead_square + diag_square
@@ -90,7 +90,6 @@ module PieceAction
         basic_moves = vertical_horizontal_squares.each_with_index
                                                  .map{|direction, index| direction = direction[..direction.find_index(occupied_vertical_horizontal_squares[index])].compact}
                                                  .reject{|direction| direction.length == 0 || direction.length == 1 && direction[0] == nil}
-                                                 .compact
         if square.piece.side == 'white'
             moves = basic_moves.map{|direction| (direction[-1].piece != nil && direction[-1].piece.side == 'white')? direction[..-2] : direction}.flatten
         else
@@ -168,26 +167,70 @@ module PieceAction
     end
 
     def pieces_checking_king(side)
-        checking_pieces = Black.pieces.select{|piece| piece.valid_moves.include?(White.pieces[0].on_square)} if side == 'white'
-        checking_pieces = White.pieces.select{|piece| piece.valid_moves.include?(Black.pieces[0].on_square)} if side == 'black'
+        checking_pieces = Black.pieces.map{|piece| piece.on_square if piece.valid_moves.include?(White.pieces[0].on_square)}.compact if side == 'white'
+        checking_pieces = White.pieces.map{|piece| piece.on_square if piece.valid_moves.include?(Black.pieces[0].on_square)}.compact if side == 'black'
         checking_pieces
     end
 
-    def in_check?(side)
+    def check?(side)
         (pieces_checking_king(side).length > 0) ? true : false
     end
 
     def checkmate?(side)
-        
+        if checking_direction_squares(side).length == 1
+            (king_has_no_moves?(side) && cannnot_block_check?(side))? true : false
+        else
+            king_has_no_moves?(side)? true : false
+        end
     end
 
-    def squares_in_check(side) #Basically all valid squares for white, maybe should check if king's moves are in white valid moves
-
+    
+    def checking_direction_squares(side) #Basically all valid squares for white, maybe should check if king's moves are in white valid moves
+        pieces = pieces_checking_king(side)
+        (side == 'white')? king = White.pieces[0] : king = Black.pieces[0]
+        in_check_squares = []
+        pieces.each do |piece|
+            if piece.instance_of?(Pawn) || piece.instance_of?(Knight)
+                in_check_squares << piece.on_square 
+            else
+                if piece.position[0] == king.position[0]
+                    if piece.position[1] < king.position[1]
+                        (0..king.position[1] - 1 - piece.position[1]).each{|i| in_check_squares << Board.board[piece.position[0]][piece.position[1] + i]}
+                    else
+                        (0..piece.position[1]- 1 - king.position[1]).each{|i| in_check_squares << Board.board[piece.position[0]][piece.position[1] - i]}
+                    end
+                elsif piece.position[0] < king.position[0]
+                    if piece.position[1] < king.position[1]
+                        (0..king.position[1] - 1 - piece.position[1]).each{|i| in_check_squares << Board.board[piece.position[0] + i][piece.position[1] + i]}
+                    else
+                        (0..piece.position[1]- 1 - king.position[1]).each{|i| in_check_squares << Board.board[piece.position[0] + i][piece.position[1] - i]}
+                    end
+                else
+                    if piece.position[1] < king.position[1]
+                        (0..king.position[1] - 1 - piece.position[1]).each{|i| in_check_squares << Board.board[piece.position[0] - i][piece.position[1] + i]}
+                    else
+                        (0..piece.position[1]- 1 - king.position[1]).each{|i| in_check_squares << Board.board[piece.position[0] - i][piece.position[1] - i]}
+                    end
+                end
+            end
+        end
+        in_check_squares
     end
 
-    def check_valid_move?(side) #Check if a move will not put king in check(block check, capture checking piece, not moving out of pin, king move out of double check)
-
+    def king_has_no_moves?(side) ## Maybe need refactor method with side argument, change into side class?
+        ((White.pieces[0].valid_moves - checking_direction_squares(side)).length == 0)? true : false if side == 'white'
+        ((Black.pieces[0].valid_moves - checking_direction_squares(side)).length == 0)? true : false if side == 'white'
     end
+
+    def cannnot_block_check?(side)
+        in_check_squares = checking_direction_squares(side)
+        White.pieces.all?{|piece| (piece.valid_moves - in_check_squares).length == piece.valid_moves.length}? true : false if side == 'white'
+        Black.pieces.all?{|piece| (piece.valid_moves - in_check_squares).length == piece.valid_moves.length}? true : false if side == 'black'
+    end
+
+    # def check_valid_move?(side) #Check if a move will not put king in check(block check, capture checking piece, not moving out of pin, king move out of double check)
+
+    # end
 end
 
 module SquareAction
@@ -222,9 +265,9 @@ module SquareAction
             White.pieces.delete_at(White.pieces.find_index(Board.board[new_square.position[0] - 1][new_square.position[1]].piece))
             Board.board[new_square.position[0] - 1][new_square.position[1]].piece = nil 
         end
-        if new_square.piece != nil
-            White.pieces.delete(White.pieces.find(new_square.piece)) if new_square.piece.side == 'white'
-            Black.pieces.delete(Black.pieces.find(new_square.piece)) if new_square.piece.side == 'black'
+        if new_square.piece != nil && !new_square.piece.instance_of?(EnPassant)
+            White.pieces.delete_at(White.pieces.find_index(new_square.piece)) if new_square.piece.side == 'white'
+            Black.pieces.delete_at(Black.pieces.find_index(new_square.piece)) if new_square.piece.side == 'black'
         end
         new_square.piece = old_square.piece
         new_square.piece.on_square = new_square

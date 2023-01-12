@@ -3,14 +3,15 @@ require_relative 'action.rb'
 
 class Pawn
     include PieceAction
-    attr_accessor :side, :piece_symbol, :valid_moves, :on_square, :have_moved, :position
-    def initialize(side:, piece_symbol: ' ', valid_moves: [], on_square:, have_moved: 0)
+    attr_accessor :side, :piece_symbol, :valid_moves, :on_square, :have_moved, :position, :supported
+    def initialize(side:, piece_symbol: ' ', valid_moves: [], on_square:, have_moved: 0, supported: 0)
         @side = side
         @piece_symbol = piece_symbol
         @on_square = on_square
         @position = on_square.position
         @have_moved = have_moved
         @valid_moves = valid_moves
+        @supported = supported
     end
 
     def update_valid_moves(on_square: @on_square)
@@ -40,13 +41,14 @@ end
 
 class Knight
     include PieceAction
-    attr_accessor :side, :piece_symbol, :valid_moves, :on_square, :position
-    def initialize(side:, piece_symbol:, valid_moves: [], on_square:)
+    attr_accessor :side, :piece_symbol, :valid_moves, :on_square, :position, :supported
+    def initialize(side:, piece_symbol:, valid_moves: [], on_square:, supported: 0)
         @side = side
         @piece_symbol = piece_symbol
         @on_square = on_square
         @position = on_square.position
         @valid_moves = valid_moves
+        @supported = supported
     end
 
     def update_valid_moves(on_square: @on_square)
@@ -56,13 +58,14 @@ end
 
 class Bishop
     include PieceAction
-    attr_accessor :side, :piece_symbol, :valid_moves, :on_square, :position
-    def initialize(side:, piece_symbol: ' ', valid_moves: [], on_square:)
+    attr_accessor :side, :piece_symbol, :valid_moves, :on_square, :position, :supported
+    def initialize(side:, piece_symbol:, valid_moves: [], on_square:, supported: 0)
         @side = side
         @piece_symbol = piece_symbol
         @on_square = on_square
         @position = on_square.position
         @valid_moves = valid_moves
+        @supported = supported
     end
 
     def update_valid_moves(on_square: @on_square)
@@ -72,14 +75,15 @@ end
 
 class Rook
     include PieceAction
-    attr_accessor :side, :piece_symbol, :valid_moves, :on_square, :have_moved, :position
-    def initialize(side:, piece_symbol: ' ', valid_moves: [], on_square:, have_moved: 0)
+    attr_accessor :side, :piece_symbol, :valid_moves, :on_square, :have_moved, :position, :supported
+    def initialize(side:, piece_symbol: ' ', valid_moves: [], on_square:, have_moved: 0, supported: 0)
         @side = side
         @piece_symbol = piece_symbol
         @on_square = on_square
         @position = on_square.position
         @have_moved = have_moved
         @valid_moves = valid_moves
+        @supported = supported
     end
 
     def update_valid_moves(on_square: @on_square)
@@ -89,13 +93,14 @@ end
 
 class Queen
     include PieceAction
-    attr_accessor :side, :piece_symbol, :valid_moves, :on_square, :position
-    def initialize(side:, piece_symbol: ' ', valid_moves: [], on_square:)
+    attr_accessor :side, :piece_symbol, :valid_moves, :on_square, :position, :supported
+    def initialize(side:, piece_symbol:, valid_moves: [], on_square:, supported: 0)
         @side = side
         @piece_symbol = piece_symbol
         @on_square = on_square
         @position = on_square.position
         @valid_moves = valid_moves
+        @supported = supported
     end
 
     def update_valid_moves(on_square: @on_square)
@@ -105,14 +110,15 @@ end
 
 class King
     include PieceAction
-    attr_accessor :side, :piece_symbol, :valid_moves, :on_square, :have_moved, :position
-    def initialize(side:, piece_symbol: ' ', valid_moves: [], on_square:, have_moved: 0)
+    attr_accessor :side, :piece_symbol, :valid_moves, :on_square, :have_moved, :position, :supported
+    def initialize(side:, piece_symbol: ' ', valid_moves: [], on_square:, have_moved: 0, supported: 0)
         @side = side
         @piece_symbol = piece_symbol
         @on_square = on_square
         @position = on_square.position
         @have_moved = have_moved
         @valid_moves = valid_moves
+        @supported = supported
     end
 
     def update_valid_moves(on_square: @on_square)
