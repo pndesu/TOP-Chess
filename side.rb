@@ -26,6 +26,26 @@ class White
     def update_piece(piece)
         @@pieces = piece
     end
+
+    def short_castle
+        rook = White.pieces.select{|piece| piece.instance_of?(Rook) && piece.origin == [7,7]}[0]
+        if (rook != nil && White.pieces[0].have_moved == 0 && rook.have_moved == 0 && pieces_between_short_castle?('white') && !in_check_between_short_castle?('white') && !check?('white'))
+            move_to_new_square(get_square('e1'), get_square('g1'))
+            move_to_new_square(get_square('h1'), get_square('f1'))
+            White.pieces.each{|piece| piece.update_valid_moves}
+            White.pieces.each{|piece| piece.update_supporting_squares}
+        end
+    end
+
+    def long_castle
+        rook = White.pieces.select{|piece| piece.instance_of?(Rook) && piece.origin == [7,0]}[0]
+        if (rook != nil && White.pieces[0].have_moved == 0 && rook.have_moved == 0 && pieces_between_long_castle?('white') && !in_check_between_long_castle?('white') && !check?('white'))
+            move_to_new_square(get_square('e1'), get_square('c1'))
+            move_to_new_square(get_square('a1'), get_square('d1'))
+            White.pieces.each{|piece| piece.update_valid_moves}
+            White.pieces.each{|piece| piece.update_supporting_squares}
+        end
+    end
 end
 
 class Black
@@ -53,5 +73,25 @@ class Black
 
     def update_piece(piece)
         @@pieces = piece
+    end
+
+    def short_castle
+        rook = Black.pieces.select{|piece| piece.instance_of?(Rook) && piece.origin == [0,7]}[0]
+        if (rook != nil && Black.pieces[0].have_moved == 0 && rook.have_moved == 0 && pieces_between_short_castle?('black') && !in_check_between_short_castle?('black') && !check?('black'))
+            move_to_new_square(get_square('e8'), get_square('g8'))
+            move_to_new_square(get_square('h8'), get_square('f8'))
+            Black.pieces.each{|piece| piece.update_valid_moves}
+            Black.pieces.each{|piece| piece.update_supporting_squares}
+        end
+    end
+
+    def long_castle
+        rook = Black.pieces.select{|piece| piece.instance_of?(Rook) && piece.origin == [0,0]}[0]
+        if (rook != nil && Black.pieces[0].have_moved == 0 && rook.have_moved == 0 && pieces_between_long_castle?('black') && !in_check_between_long_castle?('black') && !check?('black'))
+            move_to_new_square(get_square('e8'), get_square('c8'))
+            move_to_new_square(get_square('a8'), get_square('d8'))
+            Black.pieces.each{|piece| piece.update_valid_moves}
+            Black.pieces.each{|piece| piece.update_supporting_squares}
+        end
     end
 end

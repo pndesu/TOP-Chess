@@ -12,13 +12,15 @@ class Game
         white = White.new
         black = Black.new
 
-        white_pieces = White.pieces
-        black_pieces = Black.pieces
+        # white_pieces = White.pieces
+        # black_pieces = Black.pieces
 
         square = white.get_square('d2')
         target_square = get_square('d4')
         square.piece.update_valid_moves
         move_to_new_square(square, target_square) if (check_valid_side?(square, 'white') && check_valid_piece_move?(square, target_square)) 
+        White.pieces.each{|piece| piece.update_valid_moves}
+        White.pieces.each{|piece| piece.update_supporting_squares}
 
         square = white.get_square('d4')
         target_square = get_square('d5')
@@ -28,6 +30,8 @@ class Game
         old_board = Psych.unsafe_load(File.read("old_board.yml"))
         new_board = Board.board
         check_board_for_enpassant(old_board, new_board)
+        White.pieces.each{|piece| piece.update_valid_moves}
+        White.pieces.each{|piece| piece.update_supporting_squares}
 
         square = black.get_square('e7')
         target_square = get_square('e5')
@@ -37,6 +41,8 @@ class Game
         old_board = Psych.unsafe_load(File.read("old_board.yml"))
         new_board = Board.board
         check_board_for_enpassant(old_board, new_board)
+        Black.pieces.each{|piece| piece.update_valid_moves}
+        Black.pieces.each{|piece| piece.update_supporting_squares}
 
         square = white.get_square('d5')
         target_square = get_square('e6')
@@ -46,6 +52,8 @@ class Game
         old_board = Psych.unsafe_load(File.read("old_board.yml"))
         new_board = Board.board
         check_board_for_enpassant(old_board, new_board)
+        White.pieces.each{|piece| piece.update_valid_moves}
+        White.pieces.each{|piece| piece.update_supporting_squares}
 
         square = black.get_square('d7')
         target_square = get_square('d5')
@@ -55,6 +63,8 @@ class Game
         old_board = Psych.unsafe_load(File.read("old_board.yml"))
         new_board = Board.board
         check_board_for_enpassant(old_board, new_board)
+        Black.pieces.each{|piece| piece.update_valid_moves}
+        Black.pieces.each{|piece| piece.update_supporting_squares}
         
         square = black.get_square('d5')
         target_square = get_square('d4')
@@ -64,6 +74,8 @@ class Game
         old_board = Psych.unsafe_load(File.read("old_board.yml"))
         new_board = Board.board
         check_board_for_enpassant(old_board, new_board)
+        Black.pieces.each{|piece| piece.update_valid_moves}
+        Black.pieces.each{|piece| piece.update_supporting_squares}
 
         square = white.get_square('e2')
         target_square = get_square('e4')
@@ -73,6 +85,8 @@ class Game
         old_board = Psych.unsafe_load(File.read("old_board.yml"))
         new_board = Board.board
         check_board_for_enpassant(old_board, new_board)
+        White.pieces.each{|piece| piece.update_valid_moves}
+        White.pieces.each{|piece| piece.update_supporting_squares}
 
         square = black.get_square('d4')
         target_square = get_square('e3')
@@ -82,6 +96,8 @@ class Game
         old_board = Psych.unsafe_load(File.read("old_board.yml"))
         new_board = Board.board
         check_board_for_enpassant(old_board, new_board)
+        Black.pieces.each{|piece| piece.update_valid_moves}
+        Black.pieces.each{|piece| piece.update_supporting_squares}
 
         square = white.get_square('f2')
         target_square = get_square('e3')
@@ -91,6 +107,8 @@ class Game
         old_board = Psych.unsafe_load(File.read("old_board.yml"))
         new_board = Board.board
         check_board_for_enpassant(old_board, new_board)
+        White.pieces.each{|piece| piece.update_valid_moves}
+        White.pieces.each{|piece| piece.update_supporting_squares}
 
         square = white.get_square('f1')
         target_square = get_square('b5')
@@ -101,6 +119,8 @@ class Game
         old_board = Psych.unsafe_load(File.read("old_board.yml"))
         new_board = Board.board
         check_board_for_enpassant(old_board, new_board)
+        White.pieces.each{|piece| piece.update_valid_moves}
+        White.pieces.each{|piece| piece.update_supporting_squares}
 
         square = black.get_square('d8')
         target_square = get_square('d7')
@@ -117,6 +137,8 @@ class Game
             old_board = Psych.unsafe_load(File.read("old_board.yml"))
             check_board_for_enpassant(old_board, new_board)
         end
+        Black.pieces.each{|piece| piece.update_valid_moves}
+        Black.pieces.each{|piece| piece.update_supporting_squares}
 
         square = white.get_square('e6')
         target_square = get_square('d7')
@@ -134,11 +156,15 @@ class Game
             old_board = Psych.unsafe_load(File.read("old_board.yml"))
             check_board_for_enpassant(old_board, new_board)
         end
+        White.pieces.each{|piece| piece.update_valid_moves}
+        White.pieces.each{|piece| piece.update_supporting_squares}
 
         square = white.get_square('d7')
         target_square = get_square('c8')
         move_to_new_square(square, target_square)
         target_square.piece.update_valid_moves
+        White.pieces.each{|piece| piece.update_valid_moves}
+        White.pieces.each{|piece| piece.update_supporting_squares}
         
         square = black.get_square('b8')
         target_square = get_square('d7')
@@ -162,13 +188,19 @@ class Game
             old_board = Psych.unsafe_load(File.read("old_board.yml"))
             check_board_for_enpassant(old_board[0], new_board)
         end
+        Black.pieces.each{|piece| piece.update_valid_moves}
+        Black.pieces.each{|piece| piece.update_supporting_squares}
 
         
         square = white.get_square('d1')
-        target_square = get_square('d7')
+        target_square = get_square('d6')
         move_to_new_square(square, target_square)
         White.pieces.each{|piece| piece.update_valid_moves}
+        White.pieces.each{|piece| piece.update_supporting_squares}
         Black.pieces[0].update_valid_moves
+
+        white.short_castle
+        black.long_castle
         if checkmate?('black')
             puts "Checkmate! White won!"
         end

@@ -47,13 +47,13 @@ module PieceAction
             basic_moves = [Board.board[square_row - 1][square_col]]
             basic_diagonal_moves = [Board.board[square_row - 1][square_col - 1], Board.board[square_row - 1][square_col + 1]].compact
             ahead_square = basic_moves.map{|blocked_square| blocked_square if blocked_square.piece != nil} 
-            diag_square = basic_diagonal_moves.map{|blocked_square| blocked_square if (blocked_square.piece != nil && blocked_square.piece.side == 'black')}
+            diag_square = basic_diagonal_moves.map{|blocked_square| blocked_square if (blocked_square != nil && blocked_square.piece != nil && blocked_square.piece.side == 'black')}
             moves = basic_moves - ahead_square + diag_square
         else
             basic_moves = [Board.board[square_row + 1][square_col]]
             basic_diagonal_moves = [Board.board[square_row + 1][square_col - 1], Board.board[square_row + 1][square_col + 1]]
             ahead_square = basic_moves.map{|blocked_square| blocked_square if blocked_square.piece != nil} 
-            diag_square = basic_diagonal_moves.map{|blocked_square| blocked_square if (blocked_square.piece != nil && blocked_square.piece.side == 'white')}
+            diag_square = basic_diagonal_moves.map{|blocked_square| blocked_square if (blocked_square != nil && blocked_square.piece != nil && blocked_square.piece.side == 'white')}
             moves = basic_moves - ahead_square + diag_square
         end
         moves
@@ -232,11 +232,25 @@ module PieceAction
         Black.pieces.all?{|piece| (piece.valid_moves - in_check_squares).length == piece.valid_moves.length}? true : false if side == 'black'
     end
 
-    # def check_valid_move?(side) #Check if a move will not put king in check(block check, capture checking piece, not moving out of pin, king move out of double check)
+    def in_check_between_short_castle?(side) #Can be refactored to be more succint
+        return Black.pieces.any?{|piece| piece.valid_moves.include?(Board.board[7][5]) || piece.valid_moves.include?(Board.board[7][6])} if side == 'white'
+        return White.pieces.any?{|piece| piece.valid_moves.include?(Board.board[0][5]) || piece.valid_moves.include?(Board.board[0][6])} if side == 'black'
+    end
 
-    # end
-
+    def in_check_between_long_castle?(side)
+        return Black.pieces.any?{|piece| piece.valid_moves.include?(Board.board[7][1]) || piece.valid_moves.include?(Board.board[7][2]) || piece.valid_moves.include?(Board.board[7][3])} if side == 'white'
+        return White.pieces.any?{|piece| piece.valid_moves.include?(Board.board[0][1]) || piece.valid_moves.include?(Board.board[0][2]) || piece.valid_moves.include?(Board.board[0][3])} if side == 'black'
+    end
     
+    def pieces_between_short_castle?(side)
+        return (Board.board[7][5].piece == nil && Board.board[7][6].piece == nil) if side == 'white'
+        return (Board.board[0][5].piece == nil && Board.board[0][6].piece == nil) if side == 'black'
+    end
+
+    def pieces_between_long_castle?(side)
+        return (Board.board[7][1].piece == nil && Board.board[7][2].piece == nil && Board.board[7][3].piece == nil) if side == 'white'
+        return (Board.board[0][1].piece == nil && Board.board[0][2].piece == nil && Board.board[0][3].piece == nil) if side == 'black'
+    end
 end
 
 module SquareAction
