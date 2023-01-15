@@ -135,25 +135,42 @@ class Game
             check_board_for_enpassant(old_board, new_board)
         end
 
-        square = black.get_square('e8')
+        square = white.get_square('d7')
+        target_square = get_square('c8')
+        move_to_new_square(square, target_square)
+        target_square.piece.update_valid_moves
+        
+        square = black.get_square('b8')
         target_square = get_square('d7')
         square.piece.update_valid_moves
         White.pieces.each{|piece| piece.update_supporting_squares}
         File.open("old_board.yml", "w"){|file| file.write([Board.board, White.pieces, Black.pieces].to_yaml)}
-        move_to_new_square(square, target_square) if (check_valid_side?(square, 'black') && check_valid_piece_move?(square, target_square) && king_cannot_capture_supported_piece?(square, target_square))
+        move_to_new_square(square, target_square) if (check_valid_side?(square, 'black') && check_valid_piece_move?(square, target_square))
         White.pieces.each{|piece| piece.update_valid_moves}
         if check?('black')
-            old_board = (Psych.unsafe_load(File.read("old_board.yml")))
+            old_board = Psych.unsafe_load(File.read("old_board.yml"))
             board.update_board(old_board[0])
             white.update_piece(old_board[1])
             black.update_piece(old_board[2])
             White.pieces.each{|piece| piece.update_valid_moves}
+            square = black.get_square('b8')
+            square.piece.update_valid_moves
             puts ErrorMessage('invalid_move')
         else
             target_square.piece.update_valid_moves
             new_board = Board.board
             old_board = Psych.unsafe_load(File.read("old_board.yml"))
-            check_board_for_enpassant(old_board, new_board)
+            check_board_for_enpassant(old_board[0], new_board)
+        end
+
+        
+        square = white.get_square('d1')
+        target_square = get_square('d7')
+        move_to_new_square(square, target_square)
+        White.pieces.each{|piece| piece.update_valid_moves}
+        Black.pieces[0].update_valid_moves
+        if checkmate?('black')
+            puts "Checkmate! White won!"
         end
         
         board.display_board

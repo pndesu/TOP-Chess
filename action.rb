@@ -63,9 +63,9 @@ module PieceAction
         basic_moves = [[2,1],[2,-1],[1,2],[1,-2],[-2,1],[-2,-1],[-1,2],[-1,-2]]
         moves = basic_moves.map{|move| Board.board[square_row + move[0]][square_col + move[1]] if ((square_row + move[0]).between?(0,7) && (square_col + move[1]).between?(0,7))}.compact
         if square.piece.side == 'white'
-            moves = moves.select{|move| move.piece != nil && move.piece.side != 'white'}
+            moves = moves.select{|move| move.piece == nil || move.piece.side != 'white'}
         else
-            moves = moves.select{|move| move.piece != nil && move.piece.side != 'black'}
+            moves = moves.select{|move| move.piece == nil || move.piece.side != 'black'}
         end
         moves
     end
@@ -109,10 +109,12 @@ module PieceAction
         basic_moves = find_squares_vertical(square) + find_squares_diagonal(square) + find_squares_horizontal(square)
         basic_moves = basic_moves.reject{|direction| direction.length == 0 || direction.length == 1 && direction[0] == nil}
         
-        if square.piece.side == 'white'
-            moves = basic_moves.map{|direction| direction[0] if (direction[0] != nil && (direction[0].piece == nil || direction[0].piece.side != 'white'))}
+        if square.piece.side == 'white' #Needs to update all white pieces valid move after white makes a move
+            moves = basic_moves.map{|direction| direction[0] if (direction[0] != nil && (direction[0].piece == nil || (direction[0].piece.side == 'black' && direction[0].piece.supported == 0)))}.compact
+            Black.pieces.each{|piece| moves -= piece.valid_moves}
         else
-            moves = basic_moves.map{|direction| direction[0] if (direction[0] != nil && (direction[0].piece == nil || direction[0].piece.side != 'black'))}
+            moves = basic_moves.map{|direction| direction[0] if (direction[0] != nil && (direction[0].piece == nil || (direction[0].piece.side == 'white' && direction[0].piece.supported == 0)))}.compact
+            White.pieces.each{|piece| moves -= piece.valid_moves}
         end
         moves
     end
@@ -149,8 +151,8 @@ module PieceAction
     end
 
     def find_squares_vertical(square, square_row = square.position[0], square_col = square.position[1])
-        toward_white_side = (1..7).map{|i| Board.board[square_row + i][square_col] if (square_row + i).between?(1,7)} #If doesn't have blocked square returns nil?
-        toward_black_side = (1..7).map{|i| Board.board[square_row - i][square_col] if (square_row - i).between?(1,7)}
+        toward_white_side = (1..7).map{|i| Board.board[square_row + i][square_col] if (square_row + i).between?(0,7)}.compact #If doesn't have blocked square returns nil?
+        toward_black_side = (1..7).map{|i| Board.board[square_row - i][square_col] if (square_row - i).between?(0,7)}.compact
         [toward_white_side, toward_black_side]
     end
 
@@ -163,8 +165,8 @@ module PieceAction
     end
 
     def find_squares_horizontal(square, square_row = square.position[0], square_col = square.position[1])
-        toward_left_side = (1..7).map{|i| Board.board[square_row][square_col - i] if (square_col - i).between?(1,7)}.compact
-        toward_right_side = (1..7).map{|i| Board.board[square_row][square_col + i] if (square_col + i).between?(1,7)}.compact
+        toward_left_side = (1..7).map{|i| Board.board[square_row][square_col - i] if (square_col - i).between?(0,7)}.compact
+        toward_right_side = (1..7).map{|i| Board.board[square_row][square_col + i] if (square_col + i).between?(0,7)}.compact
         [toward_left_side, toward_right_side]
     end
 
@@ -179,7 +181,7 @@ module PieceAction
     end
 
     def checkmate?(side)
-        if checking_direction_squares(side).length == 1
+        if pieces_checking_king(side).length == 1
             (king_has_no_moves?(side) && cannnot_block_check?(side))? true : false
         else
             king_has_no_moves?(side)? true : false
@@ -187,7 +189,7 @@ module PieceAction
     end
 
     
-    def checking_direction_squares(side) #Basically all valid squares for white, maybe should check if king's moves are in white valid moves
+    def checking_direction_squares(side) #Return direction of squares including checking pieces until squares next to king
         pieces = pieces_checking_king(side)
         (side == 'white')? king = White.pieces[0] : king = Black.pieces[0]
         in_check_squares = []
@@ -221,17 +223,13 @@ module PieceAction
 
     def king_has_no_moves?(side) ## Maybe need refactor method with side argument, change into side class?
         ((White.pieces[0].valid_moves - checking_direction_squares(side)).length == 0)? true : false if side == 'white'
-        ((Black.pieces[0].valid_moves - checking_direction_squares(side)).length == 0)? true : false if side == 'white'
+        ((Black.pieces[0].valid_moves - checking_direction_squares(side)).length == 0)? true : false if side == 'black'
     end
 
     def cannnot_block_check?(side)
         in_check_squares = checking_direction_squares(side)
         White.pieces.all?{|piece| (piece.valid_moves - in_check_squares).length == piece.valid_moves.length}? true : false if side == 'white'
         Black.pieces.all?{|piece| (piece.valid_moves - in_check_squares).length == piece.valid_moves.length}? true : false if side == 'black'
-    end
-
-    def king_cannot_capture_supported_piece?(old_square, new_square)
-        (old_square.piece.instance_of?(King) && new_square.piece.supported >= 1)? false : true
     end
 
     # def check_valid_move?(side) #Check if a move will not put king in check(block check, capture checking piece, not moving out of pin, king move out of double check)

@@ -40,11 +40,11 @@ class Pawn
         new_supported_piece = []
         if side == 'white'
             [[position[0]-1, position[1]-1], [position[0]-1, position[1]+1]].each do |diag_square|
-                new_supported_piece << diag_square if (Board.board[diag_square[0]][diag_square[1]] != nil && Board.board[diag_square[0]][diag_square[1]].piece != nil && Board.board[diag_square[0]][diag_square[1]].piece.side == 'white')
+                new_supported_piece << Board.board[diag_square[0]][diag_square[1]] if (Board.board[diag_square[0]][diag_square[1]] != nil && Board.board[diag_square[0]][diag_square[1]].piece != nil && Board.board[diag_square[0]][diag_square[1]].piece.side == 'white')
             end
         else
             [[position[0]+1, position[1]-1], [position[0]+1, position[1]+1]].each do |diag_square|
-                new_supported_piece << diag_square if (Board.board[diag_square[0]][diag_square[1]] != nil && Board.board[diag_square[0]][diag_square[1]].piece != nil && Board.board[diag_square[0]][diag_square[1]].piece.side == 'black')
+                new_supported_piece << Board.board[diag_square[0]][diag_square[1]] if (Board.board[diag_square[0]][diag_square[1]] != nil && Board.board[diag_square[0]][diag_square[1]].piece != nil && Board.board[diag_square[0]][diag_square[1]].piece.side == 'black')
             end
         end
         current = old_supported_piece & new_supported_piece
@@ -65,7 +65,7 @@ end
 class Knight
     include PieceAction
     attr_accessor :side, :piece_symbol, :valid_moves, :on_square, :position, :supported, :supporting
-    def initialize(side:, piece_symbol:, valid_moves: [], on_square:, supported: 0, supporting: [])
+    def initialize(side: , piece_symbol:, valid_moves: [], on_square:, supported: 0, supporting: [])
         @side = side
         @piece_symbol = piece_symbol
         @on_square = on_square
