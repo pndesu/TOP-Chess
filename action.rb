@@ -40,6 +40,8 @@ module PieceAction
     #     end
     # end
 
+    
+
     def find_valid_pawn_moves(square, square_row = square.position[0], square_col = square.position[1]) #Lacking en passsant
         if square.piece.side == 'white'
             basic_moves = [Board.board[square_row - 1][square_col]]
@@ -228,9 +230,15 @@ module PieceAction
         Black.pieces.all?{|piece| (piece.valid_moves - in_check_squares).length == piece.valid_moves.length}? true : false if side == 'black'
     end
 
+    def king_cannot_capture_supported_piece?(old_square, new_square)
+        (old_square.piece.instance_of?(King) && new_square.piece.supported >= 1)? false : true
+    end
+
     # def check_valid_move?(side) #Check if a move will not put king in check(block check, capture checking piece, not moving out of pin, king move out of double check)
 
     # end
+
+    
 end
 
 module SquareAction
