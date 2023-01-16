@@ -135,6 +135,7 @@ class Rook
 
     def update_valid_moves(on_square: @on_square)
         @valid_moves = find_valid_rook_moves(on_square)
+        @have_moved = 1 if position != origin
     end
 
     def update_supporting_squares()
@@ -180,12 +181,13 @@ end
 
 class King
     include PieceAction
-    attr_accessor :side, :piece_symbol, :valid_moves, :on_square, :have_moved, :position, :supported, :supporting
+    attr_accessor :side, :piece_symbol, :valid_moves, :on_square, :have_moved, :position, :supported, :supporting, :origin
     def initialize(side:, piece_symbol: ' ', valid_moves: [], on_square:, have_moved: 0, supported: 0, supporting: [])
         @side = side
         @piece_symbol = piece_symbol
         @on_square = on_square
         @position = on_square.position
+        @origin = on_square.position
         @have_moved = have_moved
         @valid_moves = valid_moves
         @supported = supported
@@ -193,11 +195,12 @@ class King
     end
 
     def update_valid_moves(on_square: @on_square)
-        if have_moved == 0
-            @valid_moves = find_valid_king_moves(on_square)
-            have_moved = 1
+        @valid_moves = find_valid_king_moves(on_square)
+        @have_moved = 1 if position != origin
+        if side == 'white'
+            [Board.board[7][2], Board.board[7][6]].each{|square| @valid_moves.push(square) if check_castle_rights?(side, square)}
         else
-            @valid_moves = find_valid_king_moves(on_square)
+            [Board.board[0][2], Board.board[0][6]].each{|square| @valid_moves.push(square) if check_castle_rights?(side, square)}
         end
     end
 

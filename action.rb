@@ -47,13 +47,13 @@ module PieceAction
             basic_moves = [Board.board[square_row - 1][square_col]]
             basic_diagonal_moves = [Board.board[square_row - 1][square_col - 1], Board.board[square_row - 1][square_col + 1]].compact
             ahead_square = basic_moves.map{|blocked_square| blocked_square if blocked_square.piece != nil} 
-            diag_square = basic_diagonal_moves.map{|blocked_square| blocked_square if (blocked_square != nil && blocked_square.piece != nil && blocked_square.piece.side == 'black')}
+            diag_square = basic_diagonal_moves.map{|blocked_square| blocked_square if (blocked_square != nil && blocked_square.piece != nil && blocked_square.piece.side == 'black')}.compact
             moves = basic_moves - ahead_square + diag_square
         else
             basic_moves = [Board.board[square_row + 1][square_col]]
             basic_diagonal_moves = [Board.board[square_row + 1][square_col - 1], Board.board[square_row + 1][square_col + 1]]
             ahead_square = basic_moves.map{|blocked_square| blocked_square if blocked_square.piece != nil} 
-            diag_square = basic_diagonal_moves.map{|blocked_square| blocked_square if (blocked_square != nil && blocked_square.piece != nil && blocked_square.piece.side == 'white')}
+            diag_square = basic_diagonal_moves.map{|blocked_square| blocked_square if (blocked_square != nil && blocked_square.piece != nil && blocked_square.piece.side == 'white')}.compact
             moves = basic_moves - ahead_square + diag_square
         end
         moves
@@ -181,10 +181,12 @@ module PieceAction
     end
 
     def checkmate?(side)
-        if pieces_checking_king(side).length == 1
-            (king_has_no_moves?(side) && cannnot_block_check?(side))? true : false
-        else
-            king_has_no_moves?(side)? true : false
+        if check?(side)
+            if pieces_checking_king(side).length == 1
+                (king_has_no_moves?(side) && cannnot_block_check?(side))? true : false
+            else
+                king_has_no_moves?(side)? true : false
+            end
         end
     end
 
@@ -242,12 +244,12 @@ module PieceAction
         return White.pieces.any?{|piece| piece.valid_moves.include?(Board.board[0][2]) || piece.valid_moves.include?(Board.board[0][3])} if side == 'black'
     end
     
-    def pieces_between_short_castle?(side)
+    def no_pieces_between_short_castle?(side)
         return (Board.board[7][5].piece == nil && Board.board[7][6].piece == nil) if side == 'white'
         return (Board.board[0][5].piece == nil && Board.board[0][6].piece == nil) if side == 'black'
     end
 
-    def pieces_between_long_castle?(side)
+    def no_pieces_between_long_castle?(side)
         return (Board.board[7][2].piece == nil && Board.board[7][3].piece == nil) if side == 'white'
         return (Board.board[0][2].piece == nil && Board.board[0][3].piece == nil) if side == 'black'
     end
@@ -256,18 +258,18 @@ module PieceAction
         if side == 'white'
             if White.pieces[0].position[1] < square.position[1]
                 rook = White.pieces.select{|piece| piece.instance_of?(Rook) && piece.origin == [7,7]}[0]
-                return (rook != nil && White.pieces[0].have_moved == 0 && rook.have_moved == 0 && pieces_between_short_castle?('white') && !in_check_between_short_castle?('white') && !check?('white'))
+                return (rook != nil && White.pieces[0].have_moved == 0 && rook.have_moved == 0 && no_pieces_between_short_castle?('white') && !in_check_between_short_castle?('white') && !check?('white'))
             else
                 rook = White.pieces.select{|piece| piece.instance_of?(Rook) && piece.origin == [7,0]}[0]
-                return (rook != nil && White.pieces[0].have_moved == 0 && rook.have_moved == 0 && pieces_between_long_castle?('white') && !in_check_between_long_castle?('white') && !check?('white'))
+                return (rook != nil && White.pieces[0].have_moved == 0 && rook.have_moved == 0 && no_pieces_between_long_castle?('white') && !in_check_between_long_castle?('white') && !check?('white'))
             end
         else
             if Black.pieces[0].position[1] < square.position[1]
                 rook = Black.pieces.select{|piece| piece.instance_of?(Rook) && piece.origin == [0,7]}[0]
-                return (rook != nil && Black.pieces[0].have_moved == 0 && rook.have_moved == 0 && pieces_between_short_castle?('black') && !in_check_between_short_castle?('black') && !check?('black'))
+                return (rook != nil && Black.pieces[0].have_moved == 0 && rook.have_moved == 0 && no_pieces_between_short_castle?('black') && !in_check_between_short_castle?('black') && !check?('black'))
             else
                 rook = Black.pieces.select{|piece| piece.instance_of?(Rook) && piece.origin == [0,0]}[0]
-                return (rook != nil && Black.pieces[0].have_moved == 0 && rook.have_moved == 0 && pieces_between_long_castle?('black') && !in_check_between_long_castle?('black') && !check?('black'))
+                return (rook != nil && Black.pieces[0].have_moved == 0 && rook.have_moved == 0 && no_pieces_between_long_castle?('black') && !in_check_between_long_castle?('black') && !check?('black'))
             end
         end
     end
@@ -393,5 +395,25 @@ module Display
             'invalid_move' => "Please enter a valid move!",
             'invalid_input' => "Please enter a valid input!"
         }[message]
+    end
+
+    def change_square_color(square, color)
+        square.new_color = color
+    end
+
+    def change_valid_move_squares_color(square, mode)
+        if mode == 'on'
+            square.piece.valid_moves.each do |position|
+                if position.piece == nil
+                    change_square_color(position, 'round')
+                else
+                    change_square_color(position, 'red')
+                end
+            end
+        else
+            square.piece.valid_moves.each do |position|
+                change_square_color(position, position.color)
+            end
+        end
     end
 end
