@@ -27,12 +27,16 @@ class Board
     end
     
     def display_board(board = @@board)
-        board.each do |row|
+        puts "   a  b  c  d  e  f  g  h"
+        board.each_with_index do |row, index|
+            print "#{(index - 8).abs} "
             row.each do |square|
                 print square.display_square
             end
+            print " #{(index - 8).abs}"
             print "\n"
         end
+        puts "   a  b  c  d  e  f  g  h"
     end
 
     def assign_notation(board = @@board)
