@@ -295,7 +295,9 @@ module SquareAction
             new_square.piece = Queen.new(side: 'white', piece_symbol: '♕', on_square: Board.board[new_square.position[0]][new_square.position[1]])
             White.pieces.push(new_square.piece)
         elsif (old_square.piece.instance_of?(Pawn) && old_square.piece.side == 'black' && new_square.position[0] == 7)
+            Black.pieces.delete(old_square.piece)
             new_square.piece = Queen.new(side: 'black', piece_symbol: '♛', on_square: Board.board[new_square.position[0]][new_square.position[1]])
+            Black.pieces.push(new_square.piece)
         end
     end
 
