@@ -2,12 +2,12 @@ require_relative 'board.rb'
 
 class Square
     attr_accessor :color, :piece, :position, :notation, :new_color
-    def initialize(color:, piece: nil, position: [], notation: '', new_color: '') #Give more responsibility to piece class, piece class instance should have more attributes
+    def initialize(color:, piece: nil, position: [], notation: '', new_color: '')
         @color = color
         @new_color = color
         @piece = piece
         @position = position
-        @notation = notation #Just for debugging and readability
+        @notation = notation
     end
 
     def display_square

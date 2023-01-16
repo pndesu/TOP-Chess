@@ -18,8 +18,13 @@ class Pawn
 
     def update_valid_moves(on_square: @on_square)
         if have_moved == 0
-            @valid_moves = find_valid_pawn_moves(on_square).push(Board.board[on_square.position[0] - 2][on_square.position[1]]) if side == 'white'
-            @valid_moves = find_valid_pawn_moves(on_square).push(Board.board[on_square.position[0] + 2][on_square.position[1]]) if side == 'black'
+            if side == 'white'
+                @valid_moves = find_valid_pawn_moves(on_square)
+                @valid_moves.push(Board.board[on_square.position[0] - 2][on_square.position[1]]) if Board.board[on_square.position[0] - 2][on_square.position[1]].piece == nil
+            else
+                @valid_moves = find_valid_pawn_moves(on_square)
+                @valid_moves.push(Board.board[on_square.position[0] + 2][on_square.position[1]]) if Board.board[on_square.position[0] + 2][on_square.position[1]].piece == nil
+            end
             @have_moved = 1 if position != origin
         elsif have_moved == 1
             @valid_moves = find_valid_pawn_moves(on_square)

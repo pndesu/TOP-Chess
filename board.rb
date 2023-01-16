@@ -12,7 +12,7 @@ class Board
         for i in 0..7
             row = []
             for j in 0..7
-                row << Square.new(color: 'white', position: [i,j]) if i.odd? && j.odd? #Position only used here
+                row << Square.new(color: 'white', position: [i,j]) if i.odd? && j.odd?
                 row << Square.new(color: 'dark', position: [i,j]) if i.odd? && j.even?
                 row << Square.new(color: 'white', position: [i,j]) if i.even? && j.even?
                 row << Square.new(color: 'dark', position: [i,j]) if i.even? && j.odd?

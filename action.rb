@@ -29,19 +29,6 @@ module PieceAction
         [[0,4]].each{|i| Board.board[i[0]][i[1]].piece = King.new(side: side, piece_symbol: '♚', on_square: Board.board[i[0]][i[1]])} if side == 'black'
     end
 
-    # def find_valid_moves(square)
-    #     case square.piece
-    #     when Pawn then find_valid_pawn_moves(square)
-    #     when Knight then find_valid_knight_moves(square)
-    #     when Bishop then find_valid_bishop_moves(square)
-    #     when Rook then find_valid_rook_moves(square)
-    #     when Queen then find_valid_queen_moves(square)
-    #     when King then find_valid_king_moves(square)
-    #     end
-    # end
-
-    
-
     def find_valid_pawn_moves(square, square_row = square.position[0], square_col = square.position[1]) #Lacking en passsant
         if square.piece.side == 'white'
             basic_moves = [Board.board[square_row - 1][square_col]]
