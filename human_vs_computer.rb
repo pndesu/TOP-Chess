@@ -25,7 +25,10 @@ class HumanVsComputer
         Black.pieces.each{|piece| piece.update_valid_moves}
         if checkmate?('black')
             puts "Checkmate! White won!"
-            exit
+            Board.reset_board
+            White.reset_pieces
+            Black.reset_pieces
+            continue_playing
         end
 
         puts "Black's turn"

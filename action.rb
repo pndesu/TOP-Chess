@@ -32,13 +32,15 @@ module PieceAction
     def find_valid_pawn_moves(square, square_row = square.position[0], square_col = square.position[1]) #Lacking en passsant
         if square.piece.side == 'white'
             basic_moves = [Board.board[square_row - 1][square_col]]
-            basic_diagonal_moves = [Board.board[square_row - 1][square_col - 1], Board.board[square_row - 1][square_col + 1]].compact
+            basic_diagonal_moves = [[-1,-1],[-1,1]]
+            basic_diagonal_moves = basic_diagonal_moves.map{|move| Board.board[square_row + move[0]][square_col + move[1]] if ((square_row + move[0]).between?(0,7) && (square_col + move[1]).between?(0,7))}.compact
             ahead_square = basic_moves.map{|blocked_square| blocked_square if blocked_square.piece != nil} 
             diag_square = basic_diagonal_moves.map{|blocked_square| blocked_square if (blocked_square != nil && blocked_square.piece != nil && blocked_square.piece.side == 'black')}.compact
             moves = basic_moves - ahead_square + diag_square
         else
             basic_moves = [Board.board[square_row + 1][square_col]]
-            basic_diagonal_moves = [Board.board[square_row + 1][square_col - 1], Board.board[square_row + 1][square_col + 1]]
+            basic_diagonal_moves = [[1,-1],[1,1]]
+            basic_diagonal_moves = basic_diagonal_moves.map{|move| Board.board[square_row + move[0]][square_col + move[1]] if ((square_row + move[0]).between?(0,7) && (square_col + move[1]).between?(0,7))}.compact
             ahead_square = basic_moves.map{|blocked_square| blocked_square if blocked_square.piece != nil} 
             diag_square = basic_diagonal_moves.map{|blocked_square| blocked_square if (blocked_square != nil && blocked_square.piece != nil && blocked_square.piece.side == 'white')}.compact
             moves = basic_moves - ahead_square + diag_square

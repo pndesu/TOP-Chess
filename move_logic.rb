@@ -27,7 +27,10 @@ module MoveLogic
         if checkmate?('white')
             File.delete("./saved_games/#{filename}.yaml") if File.exist?("./saved_games/#{filename}.yaml")
             puts "Checkmate! Black won!"
-            exit
+            Board.reset_board
+            White.reset_pieces
+            Black.reset_pieces
+            continue_playing
         end
 
         puts "White's turn"
@@ -65,7 +68,10 @@ module MoveLogic
         if checkmate?('black')
             File.delete("./saved_games/#{filename}") if File.exist?("./saved_games/#{filename}")
             puts "Checkmate! White won!"
-            exit
+            Board.reset_board
+            White.reset_pieces
+            Black.reset_pieces
+            continue_playing
         end
 
         puts "Black's turn"

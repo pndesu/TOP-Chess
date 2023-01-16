@@ -23,6 +23,10 @@ class White
         @@pieces
     end
 
+    def self.reset_pieces
+        @@pieces = []
+    end
+
     def update_piece(piece)
         @@pieces = piece
     end
@@ -63,6 +67,10 @@ class Black
 
     def self.pieces
         @@pieces
+    end
+
+    def self.reset_pieces
+        @@pieces = []
     end
 
     def update_piece(piece)

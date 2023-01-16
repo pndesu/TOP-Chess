@@ -1,4 +1,5 @@
 require_relative 'display.rb'
+require_relative 'game.rb'
 require 'yaml'
 
 module Serializer
@@ -50,12 +51,12 @@ module Serializer
     end
 
     def continue_playing
-        loop do
-            print "Press [y] to continue playing: "
-            input = gets.chomp.downcase
-            if (input.match(/^[yn]$/) && input.length == 1)
-                Game.new.play if input == 'y'
-            end
+        print "Press [y] to continue playing: "
+        input = gets.chomp.downcase
+        if input == 'y'
+            Game.new.play
+        else
+            exit
         end
     end
 end

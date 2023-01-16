@@ -8,6 +8,10 @@ class Board
         @@board
     end
 
+    def self.reset_board
+        @@board = []
+    end
+
     def initialize
         for i in 0..7
             row = []
