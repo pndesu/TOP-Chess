@@ -20,10 +20,10 @@ class Pawn
         if have_moved == 0
             if side == 'white'
                 @valid_moves = find_valid_pawn_moves(on_square)
-                @valid_moves.push(Board.board[on_square.position[0] - 2][on_square.position[1]]) if Board.board[on_square.position[0] - 2][on_square.position[1]].piece == nil
+                @valid_moves.push(Board.board[on_square.position[0] - 2][on_square.position[1]]) if Board.board[on_square.position[0] - 2][on_square.position[1]].piece == nil && Board.board[on_square.position[0] - 1][on_square.position[1]].piece == nil
             else
                 @valid_moves = find_valid_pawn_moves(on_square)
-                @valid_moves.push(Board.board[on_square.position[0] + 2][on_square.position[1]]) if Board.board[on_square.position[0] + 2][on_square.position[1]].piece == nil
+                @valid_moves.push(Board.board[on_square.position[0] + 2][on_square.position[1]]) if Board.board[on_square.position[0] + 2][on_square.position[1]].piece == nil && Board.board[on_square.position[0] + 1][on_square.position[1]].piece == nil
             end
             @have_moved = 1 if position != origin
         elsif have_moved == 1

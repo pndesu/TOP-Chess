@@ -3,18 +3,17 @@ require_relative 'board.rb'
 require_relative 'square.rb'
 require_relative 'side.rb'
 require_relative 'piece.rb'
-require 'yaml'
+require_relative 'display.rb'
+require_relative 'serializer.rb'
 
-class Game
-    attr_accessor :turn, :board, :white, :black, :last_move
-    include PieceAction, SquareAction, Display
+module MoveLogic
+    include Serializer
     def play
-        @board = Board.new
-        @white = White.new
-        @black = Black.new
+        @board.update_board(@storage[0]) 
+        @white.update_piece(@storage[1])
+        @black.update_piece(@storage[2])
+        @last_move = @storage[3]
         @board.display_board
-        @turn = 0
-        @last_move = []
         take_turn
     end
 
@@ -26,12 +25,14 @@ class Game
     def white_turn
         White.pieces.each{|piece| piece.update_valid_moves}
         if checkmate?('white')
+            File.delete("./saved_games/#{filename}.yaml") if File.exist?("./saved_games/#{filename}.yaml")
             puts "Checkmate! Black won!"
             exit
         end
 
         puts "White's turn"
         File.open("old_board.yml", "w"){|file| file.write([Board.board, White.pieces, Black.pieces].to_yaml)}
+        last_move.each{|move| change_square_color(move, move.color)} if last_move.length != 0
         input = get_user_input('white')
         square = get_square(input[0])
         target_square = get_square(input[1])
@@ -62,12 +63,14 @@ class Game
     def black_turn
         Black.pieces.each{|piece| piece.update_valid_moves}
         if checkmate?('black')
+            File.delete("./saved_games/#{filename}") if File.exist?("./saved_games/#{filename}")
             puts "Checkmate! White won!"
             exit
         end
 
         puts "Black's turn"
         File.open("old_board.yml", "w"){|file| file.write([Board.board, White.pieces, Black.pieces, @last_move].to_yaml)}
+        last_move.each{|move| change_square_color(move, move.color)} if last_move.length != 0
         input = get_user_input('black')
         square = get_square(input[0])
         target_square = get_square(input[1])
@@ -97,10 +100,12 @@ class Game
     
     def get_user_input(side) #Get user input and change square color
         arr = []
-        last_move.each{|move| change_square_color(move, move.color)} if last_move.length != 0
         loop do
+            puts 'Press [s] to save game, [q] to quit.'
             print 'Enter square: '
             input = gets.chomp
+            save if input == 's'
+            exit if input == 'q'
             if input.match(/^[a-h][1-8]$/) && get_square(input).piece != nil && get_square(input).piece.side == side && get_square(input).piece.valid_moves.length > 0
                 arr << input
                 break 
@@ -138,5 +143,3 @@ class Game
         check_board_for_enpassant(old_board[0], new_board)
     end
 end
-Game.new.play
-

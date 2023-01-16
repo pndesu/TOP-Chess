@@ -373,16 +373,6 @@ Enter 4 to promote to a bishop
             end
         end
     end
-    
-end
-
-module Display
-    def ErrorMessage(message)
-        {
-            'invalid_move' => "Please enter a valid move!",
-            'invalid_input' => "Please enter a valid input!"
-        }[message]
-    end
 
     def change_square_color(square, color)
         square.new_color = color
@@ -404,3 +394,4 @@ module Display
         end
     end
 end
+

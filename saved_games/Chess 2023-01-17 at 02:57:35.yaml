@@ -1,0 +1,1702 @@
+--- !ruby/object:HumanVsComputer
+filename: ''
+board: !ruby/object:Board {}
+white: !ruby/object:White {}
+black: !ruby/object:Black {}
+turn: 6
+last_move:
+- &3 !ruby/object:Square
+  color: white
+  new_color: white
+  piece:
+  position: &2
+  - 0
+  - 4
+  notation: e8
+- &1 !ruby/object:Square
+  color: white
+  new_color: white
+  piece: !ruby/object:King
+    side: black
+    piece_symbol: "♚"
+    on_square: *1
+    position: &13
+    - 1
+    - 5
+    origin: *2
+    have_moved: 1
+    valid_moves:
+    - &12 !ruby/object:Square
+      color: dark
+      new_color: dark
+      piece:
+      position:
+      - 2
+      - 5
+      notation: f6
+    - &52 !ruby/object:Square
+      color: white
+      new_color: white
+      piece:
+      position:
+      - 2
+      - 4
+      notation: e6
+    - &6 !ruby/object:Square
+      color: white
+      new_color: white
+      piece:
+      position:
+      - 2
+      - 6
+      notation: g6
+    - *3
+    - &9 !ruby/object:Square
+      color: dark
+      new_color: dark
+      piece:
+      position: &57
+      - 1
+      - 4
+      notation: e7
+    supported: 0
+    supporting:
+    - &4 !ruby/object:Pawn
+      side: black
+      piece_symbol: "♟︎"
+      on_square: &49 !ruby/object:Square
+        color: dark
+        new_color: dark
+        piece: *4
+        position: &5
+        - 1
+        - 6
+        notation: g7
+      position: *5
+      origin: *5
+      have_moved: 0
+      valid_moves:
+      - *6
+      - &31 !ruby/object:Square
+        color: dark
+        new_color: dark
+        piece:
+        position:
+        - 3
+        - 6
+        notation: g5
+      supported: 2
+      supporting: []
+    - &7 !ruby/object:Bishop
+      side: black
+      piece_symbol: "♝"
+      on_square: &38 !ruby/object:Square
+        color: dark
+        new_color: dark
+        piece: *7
+        position: &8
+        - 0
+        - 5
+        notation: f8
+      position: *8
+      valid_moves:
+      - *9
+      - &24 !ruby/object:Square
+        color: dark
+        new_color: dark
+        piece:
+        position:
+        - 2
+        - 3
+        notation: d6
+      - &36 !ruby/object:Square
+        color: dark
+        new_color: dark
+        piece:
+        position:
+        - 3
+        - 2
+        notation: c5
+      - &61 !ruby/object:Square
+        color: dark
+        new_color: dark
+        piece:
+        position:
+        - 4
+        - 1
+        notation: b4
+      - &65 !ruby/object:Square
+        color: dark
+        new_color: dark
+        piece:
+        position:
+        - 5
+        - 0
+        notation: a3
+      supported: 2
+      supporting:
+      - *4
+    - &10 !ruby/object:Knight
+      side: black
+      piece_symbol: "♞"
+      on_square: &39 !ruby/object:Square
+        color: white
+        new_color: white
+        piece: *10
+        position: &11
+        - 0
+        - 6
+        notation: g8
+      position: *11
+      valid_moves:
+      - &44 !ruby/object:Square
+        color: dark
+        new_color: dark
+        piece:
+        position:
+        - 2
+        - 7
+        notation: h6
+      - *12
+      - *9
+      supported: 2
+      supporting: []
+  position: *13
+  notation: f7
+storage:
+- - - &14 !ruby/object:Square
+      color: white
+      new_color: white
+      piece: !ruby/object:Rook
+        side: black
+        piece_symbol: "♜"
+        on_square: *14
+        position: &15
+        - 0
+        - 0
+        origin: *15
+        have_moved: 0
+        valid_moves:
+        - &45 !ruby/object:Square
+          color: dark
+          new_color: dark
+          piece:
+          position: &18
+          - 1
+          - 0
+          notation: a7
+        - &21 !ruby/object:Square
+          color: white
+          new_color: white
+          piece:
+          position:
+          - 2
+          - 0
+          notation: a6
+        supported: 0
+        supporting:
+        - &16 !ruby/object:Pawn
+          side: black
+          piece_symbol: "♟︎"
+          on_square: &53 !ruby/object:Square
+            color: dark
+            new_color: dark
+            piece: *16
+            position: &17
+            - 3
+            - 0
+            notation: a5
+          position: *17
+          origin: *18
+          have_moved: 1
+          valid_moves:
+          - &60 !ruby/object:Square
+            color: white
+            new_color: white
+            piece:
+            position:
+            - 4
+            - 0
+            notation: a4
+          supported: 1
+          supporting: []
+        - &19 !ruby/object:Knight
+          side: black
+          piece_symbol: "♞"
+          on_square: &25 !ruby/object:Square
+            color: dark
+            new_color: dark
+            piece: *19
+            position: &20
+            - 0
+            - 1
+            notation: b8
+          position: *20
+          valid_moves:
+          - &35 !ruby/object:Square
+            color: white
+            new_color: white
+            piece:
+            position:
+            - 2
+            - 2
+            notation: c6
+          - *21
+          supported: 1
+          supporting:
+          - &22 !ruby/object:Pawn
+            side: black
+            piece_symbol: "♟︎"
+            on_square: &48 !ruby/object:Square
+              color: white
+              new_color: white
+              piece: *22
+              position: &23
+              - 1
+              - 3
+              notation: d7
+            position: *23
+            origin: *23
+            have_moved: 0
+            valid_moves:
+            - *24
+            - &55 !ruby/object:Square
+              color: white
+              new_color: white
+              piece:
+              position:
+              - 3
+              - 3
+              notation: d5
+            supported: 3
+            supporting: []
+      position: *15
+      notation: a8
+    - *25
+    - &26 !ruby/object:Square
+      color: white
+      new_color: white
+      piece: &32 !ruby/object:Bishop
+        side: black
+        piece_symbol: "♝"
+        on_square: *26
+        position: &29
+        - 0
+        - 2
+        valid_moves: []
+        supported: 1
+        supporting:
+        - &27 !ruby/object:Pawn
+          side: black
+          piece_symbol: "♟︎"
+          on_square: &46 !ruby/object:Square
+            color: white
+            new_color: white
+            piece: *27
+            position: &28
+            - 1
+            - 1
+            notation: b7
+          position: *28
+          origin: *28
+          have_moved: 0
+          valid_moves:
+          - &51 !ruby/object:Square
+            color: dark
+            new_color: dark
+            piece:
+            position:
+            - 2
+            - 1
+            notation: b6
+          - &54 !ruby/object:Square
+            color: white
+            new_color: white
+            piece:
+            position:
+            - 3
+            - 1
+            notation: b5
+          supported: 1
+          supporting: []
+        - *22
+      position: *29
+      notation: c8
+    - &30 !ruby/object:Square
+      color: dark
+      new_color: dark
+      piece: !ruby/object:Queen
+        side: black
+        piece_symbol: "♛"
+        on_square: *30
+        position: &37
+        - 0
+        - 3
+        valid_moves:
+        - *9
+        - *12
+        - *31
+        - &64 !ruby/object:Square
+          color: dark
+          new_color: dark
+          piece:
+          position:
+          - 4
+          - 7
+          notation: h4
+        - *3
+        supported: 0
+        supporting:
+        - *22
+        - *32
+        - *7
+        - &33 !ruby/object:Pawn
+          side: black
+          piece_symbol: "♟︎"
+          on_square: &47 !ruby/object:Square
+            color: dark
+            new_color: dark
+            piece: *33
+            position: &34
+            - 1
+            - 2
+            notation: c7
+          position: *34
+          origin: *34
+          have_moved: 0
+          valid_moves:
+          - *35
+          - *36
+          supported: 1
+          supporting: []
+      position: *37
+      notation: d8
+    - *3
+    - *38
+    - *39
+    - &40 !ruby/object:Square
+      color: dark
+      new_color: dark
+      piece: !ruby/object:Rook
+        side: black
+        piece_symbol: "♜"
+        on_square: *40
+        position: &41
+        - 0
+        - 7
+        origin: *41
+        have_moved: 0
+        valid_moves: []
+        supported: 0
+        supporting:
+        - &42 !ruby/object:Pawn
+          side: black
+          piece_symbol: "♟︎"
+          on_square: &50 !ruby/object:Square
+            color: white
+            new_color: white
+            piece: *42
+            position: &43
+            - 1
+            - 7
+            notation: h7
+          position: *43
+          origin: *43
+          have_moved: 0
+          valid_moves:
+          - *44
+          - &59 !ruby/object:Square
+            color: white
+            new_color: white
+            piece:
+            position:
+            - 3
+            - 7
+            notation: h5
+          supported: 1
+          supporting: []
+        - *10
+      position: *41
+      notation: h8
+  - - *45
+    - *46
+    - *47
+    - *48
+    - *9
+    - *1
+    - *49
+    - *50
+  - - *21
+    - *51
+    - *35
+    - *24
+    - *52
+    - *12
+    - *6
+    - *44
+  - - *53
+    - *54
+    - *36
+    - *55
+    - &56 !ruby/object:Square
+      color: dark
+      new_color: dark
+      piece: !ruby/object:Pawn
+        side: black
+        piece_symbol: "♟︎"
+        on_square: *56
+        position: &58
+        - 3
+        - 4
+        origin: *57
+        have_moved: 1
+        valid_moves: []
+        supported: 0
+        supporting: []
+      position: *58
+      notation: e5
+    - !ruby/object:Square
+      color: white
+      new_color: white
+      piece:
+      position:
+      - 3
+      - 5
+      notation: f5
+    - *31
+    - *59
+  - - *60
+    - *61
+    - &74 !ruby/object:Square
+      color: white
+      new_color: white
+      piece:
+      position:
+      - 4
+      - 2
+      notation: c4
+    - &78 !ruby/object:Square
+      color: dark
+      new_color: dark
+      piece:
+      position:
+      - 4
+      - 3
+      notation: d4
+    - &62 !ruby/object:Square
+      color: white
+      new_color: white
+      piece: !ruby/object:Pawn
+        side: white
+        piece_symbol: "♙"
+        on_square: *62
+        position: &63
+        - 4
+        - 4
+        origin: &79
+        - 6
+        - 4
+        have_moved: 1
+        valid_moves: []
+        supported: 0
+        supporting: []
+      position: *63
+      notation: e4
+    - &83 !ruby/object:Square
+      color: dark
+      new_color: dark
+      piece:
+      position:
+      - 4
+      - 5
+      notation: f4
+    - &87 !ruby/object:Square
+      color: white
+      new_color: white
+      piece:
+      position:
+      - 4
+      - 6
+      notation: g4
+    - *64
+  - - *65
+    - &70 !ruby/object:Square
+      color: white
+      new_color: white
+      piece:
+      position:
+      - 5
+      - 1
+      notation: b3
+    - &73 !ruby/object:Square
+      color: dark
+      new_color: dark
+      piece:
+      position:
+      - 5
+      - 2
+      notation: c3
+    - &77 !ruby/object:Square
+      color: white
+      new_color: white
+      piece:
+      position:
+      - 5
+      - 3
+      notation: d3
+    - !ruby/object:Square
+      color: dark
+      new_color: dark
+      piece:
+      position:
+      - 5
+      - 4
+      notation: e3
+    - &82 !ruby/object:Square
+      color: white
+      new_color: white
+      piece:
+      position:
+      - 5
+      - 5
+      notation: f3
+    - &86 !ruby/object:Square
+      color: dark
+      new_color: dark
+      piece:
+      position:
+      - 5
+      - 6
+      notation: g3
+    - &90 !ruby/object:Square
+      color: white
+      new_color: white
+      piece:
+      position:
+      - 5
+      - 7
+      notation: h3
+  - - &66 !ruby/object:Square
+      color: white
+      new_color: white
+      piece: &93 !ruby/object:Pawn
+        side: white
+        piece_symbol: "♙"
+        on_square: *66
+        position: &67
+        - 6
+        - 0
+        origin: *67
+        have_moved: 0
+        valid_moves:
+        - *65
+        - *60
+        supported: 2
+        supporting: []
+      position: *67
+      notation: a2
+    - &68 !ruby/object:Square
+      color: dark
+      new_color: dark
+      piece: &99 !ruby/object:Pawn
+        side: white
+        piece_symbol: "♙"
+        on_square: *68
+        position: &69
+        - 6
+        - 1
+        origin: *69
+        have_moved: 0
+        valid_moves:
+        - *70
+        - *61
+        supported: 1
+        supporting: []
+      position: *69
+      notation: b2
+    - &71 !ruby/object:Square
+      color: white
+      new_color: white
+      piece: !ruby/object:Pawn
+        side: white
+        piece_symbol: "♙"
+        on_square: *71
+        position: &72
+        - 6
+        - 2
+        origin: *72
+        have_moved: 0
+        valid_moves:
+        - *73
+        - *74
+        supported: 0
+        supporting: []
+      position: *72
+      notation: c2
+    - &75 !ruby/object:Square
+      color: dark
+      new_color: dark
+      piece: &96 !ruby/object:Pawn
+        side: white
+        piece_symbol: "♙"
+        on_square: *75
+        position: &76
+        - 6
+        - 3
+        origin: *76
+        have_moved: 0
+        valid_moves:
+        - *77
+        - *78
+        supported: 3
+        supporting: []
+      position: *76
+      notation: d2
+    - &103 !ruby/object:Square
+      color: white
+      new_color: white
+      piece:
+      position: *79
+      notation: e2
+    - &80 !ruby/object:Square
+      color: dark
+      new_color: dark
+      piece: &108 !ruby/object:Pawn
+        side: white
+        piece_symbol: "♙"
+        on_square: *80
+        position: &81
+        - 6
+        - 5
+        origin: *81
+        have_moved: 0
+        valid_moves:
+        - *82
+        - *83
+        supported: 2
+        supporting: []
+      position: *81
+      notation: f2
+    - &84 !ruby/object:Square
+      color: white
+      new_color: white
+      piece: &107 !ruby/object:Pawn
+        side: white
+        piece_symbol: "♙"
+        on_square: *84
+        position: &85
+        - 6
+        - 6
+        origin: *85
+        have_moved: 0
+        valid_moves:
+        - *86
+        - *87
+        supported: 1
+        supporting: []
+      position: *85
+      notation: g2
+    - &88 !ruby/object:Square
+      color: dark
+      new_color: dark
+      piece: &114 !ruby/object:Pawn
+        side: white
+        piece_symbol: "♙"
+        on_square: *88
+        position: &89
+        - 6
+        - 7
+        origin: *89
+        have_moved: 0
+        valid_moves:
+        - *90
+        - *64
+        supported: 1
+        supporting: []
+      position: *89
+      notation: h2
+  - - &91 !ruby/object:Square
+      color: dark
+      new_color: dark
+      piece: !ruby/object:Rook
+        side: white
+        piece_symbol: "♖"
+        on_square: *91
+        position: &92
+        - 7
+        - 0
+        origin: *92
+        have_moved: 0
+        valid_moves: []
+        supported: 0
+        supporting:
+        - *93
+        - &94 !ruby/object:Knight
+          side: white
+          piece_symbol: "♘"
+          on_square: &97 !ruby/object:Square
+            color: white
+            new_color: white
+            piece: *94
+            position: &95
+            - 7
+            - 1
+            notation: b1
+          position: *95
+          valid_moves:
+          - *73
+          - *65
+          supported: 1
+          supporting:
+          - *96
+      position: *92
+      notation: a1
+    - *97
+    - &98 !ruby/object:Square
+      color: dark
+      new_color: dark
+      piece: !ruby/object:Bishop
+        side: white
+        piece_symbol: "♗"
+        on_square: *98
+        position: &100
+        - 7
+        - 2
+        valid_moves: []
+        supported: 0
+        supporting:
+        - *99
+        - *96
+      position: *100
+      notation: c1
+    - &104 !ruby/object:Square
+      color: white
+      new_color: white
+      piece:
+      position:
+      - 7
+      - 3
+      notation: d1
+    - &101 !ruby/object:Square
+      color: dark
+      new_color: dark
+      piece: !ruby/object:King
+        side: white
+        piece_symbol: "♔"
+        on_square: *101
+        position: &102
+        - 7
+        - 4
+        origin: *102
+        have_moved: 0
+        valid_moves:
+        - *103
+        - *104
+        supported: 0
+        supporting:
+        - &105 !ruby/object:Bishop
+          side: white
+          piece_symbol: "♗"
+          on_square: &109 !ruby/object:Square
+            color: white
+            new_color: white
+            piece: *105
+            position: &106
+            - 7
+            - 5
+            notation: f1
+          position: *106
+          valid_moves:
+          - *103
+          - *77
+          - *74
+          - *54
+          - *21
+          supported: 1
+          supporting:
+          - *107
+        - *108
+        - *96
+      position: *102
+      notation: e1
+    - *109
+    - &110 !ruby/object:Square
+      color: dark
+      new_color: dark
+      piece: &115 !ruby/object:Knight
+        side: white
+        piece_symbol: "♘"
+        on_square: *110
+        position: &111
+        - 7
+        - 6
+        valid_moves:
+        - *90
+        - *82
+        - *103
+        supported: 1
+        supporting: []
+      position: *111
+      notation: g1
+    - &112 !ruby/object:Square
+      color: white
+      new_color: white
+      piece: !ruby/object:Rook
+        side: white
+        piece_symbol: "♖"
+        on_square: *112
+        position: &113
+        - 7
+        - 7
+        origin: *113
+        have_moved: 0
+        valid_moves: []
+        supported: 0
+        supporting:
+        - *114
+        - *115
+      position: *113
+      notation: h1
+- - &116 !ruby/object:King
+    side: white
+    piece_symbol: "♔"
+    on_square: !ruby/object:Square
+      color: dark
+      new_color: dark
+      piece: *116
+      position: &117
+      - 7
+      - 4
+      notation: e1
+    position: *117
+    origin: *117
+    have_moved: 0
+    valid_moves:
+    - &120 !ruby/object:Square
+      color: white
+      new_color: white
+      piece:
+      position: &137
+      - 6
+      - 4
+      notation: e2
+    - !ruby/object:Square
+      color: white
+      new_color: white
+      piece:
+      position:
+      - 7
+      - 3
+      notation: d1
+    supported: 0
+    supporting:
+    - &118 !ruby/object:Bishop
+      side: white
+      piece_symbol: "♗"
+      on_square: !ruby/object:Square
+        color: white
+        new_color: white
+        piece: *118
+        position: &119
+        - 7
+        - 5
+        notation: f1
+      position: *119
+      valid_moves:
+      - *120
+      - &127 !ruby/object:Square
+        color: white
+        new_color: white
+        piece:
+        position:
+        - 5
+        - 3
+        notation: d3
+      - &134 !ruby/object:Square
+        color: white
+        new_color: white
+        piece:
+        position:
+        - 4
+        - 2
+        notation: c4
+      - &174 !ruby/object:Square
+        color: white
+        new_color: white
+        piece:
+        position:
+        - 3
+        - 1
+        notation: b5
+      - &206 !ruby/object:Square
+        color: white
+        new_color: white
+        piece:
+        position:
+        - 2
+        - 0
+        notation: a6
+      supported: 1
+      supporting:
+      - &121 !ruby/object:Pawn
+        side: white
+        piece_symbol: "♙"
+        on_square: !ruby/object:Square
+          color: white
+          new_color: white
+          piece: *121
+          position: &122
+          - 6
+          - 6
+          notation: g2
+        position: *122
+        origin: *122
+        have_moved: 0
+        valid_moves:
+        - !ruby/object:Square
+          color: dark
+          new_color: dark
+          piece:
+          position:
+          - 5
+          - 6
+          notation: g3
+        - !ruby/object:Square
+          color: white
+          new_color: white
+          piece:
+          position:
+          - 4
+          - 6
+          notation: g4
+        supported: 1
+        supporting: []
+    - &123 !ruby/object:Pawn
+      side: white
+      piece_symbol: "♙"
+      on_square: !ruby/object:Square
+        color: dark
+        new_color: dark
+        piece: *123
+        position: &124
+        - 6
+        - 5
+        notation: f2
+      position: *124
+      origin: *124
+      have_moved: 0
+      valid_moves:
+      - &183 !ruby/object:Square
+        color: white
+        new_color: white
+        piece:
+        position:
+        - 5
+        - 5
+        notation: f3
+      - &182 !ruby/object:Square
+        color: dark
+        new_color: dark
+        piece:
+        position:
+        - 4
+        - 5
+        notation: f4
+      supported: 2
+      supporting: []
+    - &125 !ruby/object:Pawn
+      side: white
+      piece_symbol: "♙"
+      on_square: !ruby/object:Square
+        color: dark
+        new_color: dark
+        piece: *125
+        position: &126
+        - 6
+        - 3
+        notation: d2
+      position: *126
+      origin: *126
+      have_moved: 0
+      valid_moves:
+      - *127
+      - !ruby/object:Square
+        color: dark
+        new_color: dark
+        piece:
+        position:
+        - 4
+        - 3
+        notation: d4
+      supported: 3
+      supporting: []
+  - &128 !ruby/object:Pawn
+    side: white
+    piece_symbol: "♙"
+    on_square: !ruby/object:Square
+      color: white
+      new_color: white
+      piece: *128
+      position: &129
+      - 6
+      - 0
+      notation: a2
+    position: *129
+    origin: *129
+    have_moved: 0
+    valid_moves:
+    - &145 !ruby/object:Square
+      color: dark
+      new_color: dark
+      piece:
+      position:
+      - 5
+      - 0
+      notation: a3
+    - &198 !ruby/object:Square
+      color: white
+      new_color: white
+      piece:
+      position:
+      - 4
+      - 0
+      notation: a4
+    supported: 2
+    supporting: []
+  - &130 !ruby/object:Pawn
+    side: white
+    piece_symbol: "♙"
+    on_square: !ruby/object:Square
+      color: dark
+      new_color: dark
+      piece: *130
+      position: &131
+      - 6
+      - 1
+      notation: b2
+    position: *131
+    origin: *131
+    have_moved: 0
+    valid_moves:
+    - &150 !ruby/object:Square
+      color: white
+      new_color: white
+      piece:
+      position:
+      - 5
+      - 1
+      notation: b3
+    - &160 !ruby/object:Square
+      color: dark
+      new_color: dark
+      piece:
+      position:
+      - 4
+      - 1
+      notation: b4
+    supported: 1
+    supporting: []
+  - &132 !ruby/object:Pawn
+    side: white
+    piece_symbol: "♙"
+    on_square: !ruby/object:Square
+      color: white
+      new_color: white
+      piece: *132
+      position: &133
+      - 6
+      - 2
+      notation: c2
+    position: *133
+    origin: *133
+    have_moved: 0
+    valid_moves:
+    - &144 !ruby/object:Square
+      color: dark
+      new_color: dark
+      piece:
+      position:
+      - 5
+      - 2
+      notation: c3
+    - *134
+    supported: 0
+    supporting: []
+  - *125
+  - &135 !ruby/object:Pawn
+    side: white
+    piece_symbol: "♙"
+    on_square: !ruby/object:Square
+      color: white
+      new_color: white
+      piece: *135
+      position: &136
+      - 4
+      - 4
+      notation: e4
+    position: *136
+    origin: *137
+    have_moved: 1
+    valid_moves: []
+    supported: 0
+    supporting: []
+  - *123
+  - *121
+  - &138 !ruby/object:Pawn
+    side: white
+    piece_symbol: "♙"
+    on_square: !ruby/object:Square
+      color: dark
+      new_color: dark
+      piece: *138
+      position: &139
+      - 6
+      - 7
+      notation: h2
+    position: *139
+    origin: *139
+    have_moved: 0
+    valid_moves:
+    - &193 !ruby/object:Square
+      color: white
+      new_color: white
+      piece:
+      position:
+      - 5
+      - 7
+      notation: h3
+    - &169 !ruby/object:Square
+      color: dark
+      new_color: dark
+      piece:
+      position:
+      - 4
+      - 7
+      notation: h4
+    supported: 1
+    supporting: []
+  - &140 !ruby/object:Rook
+    side: white
+    piece_symbol: "♖"
+    on_square: !ruby/object:Square
+      color: dark
+      new_color: dark
+      piece: *140
+      position: &141
+      - 7
+      - 0
+      notation: a1
+    position: *141
+    origin: *141
+    have_moved: 0
+    valid_moves: []
+    supported: 0
+    supporting:
+    - *128
+    - &142 !ruby/object:Knight
+      side: white
+      piece_symbol: "♘"
+      on_square: !ruby/object:Square
+        color: white
+        new_color: white
+        piece: *142
+        position: &143
+        - 7
+        - 1
+        notation: b1
+      position: *143
+      valid_moves:
+      - *144
+      - *145
+      supported: 1
+      supporting:
+      - *125
+  - *142
+  - &146 !ruby/object:Bishop
+    side: white
+    piece_symbol: "♗"
+    on_square: !ruby/object:Square
+      color: dark
+      new_color: dark
+      piece: *146
+      position: &147
+      - 7
+      - 2
+      notation: c1
+    position: *147
+    valid_moves: []
+    supported: 0
+    supporting:
+    - *130
+    - *125
+  - &148 !ruby/object:Queen
+    side: white
+    piece_symbol: "♕"
+    on_square: &153 !ruby/object:Square
+      color: white
+      new_color: white
+      piece: *148
+      position: &149
+      - 1
+      - 5
+      notation: f7
+    position: *149
+    valid_moves:
+    - !ruby/object:Square
+      color: white
+      new_color: white
+      piece:
+      position:
+      - 2
+      - 4
+      notation: e6
+    - &156 !ruby/object:Square
+      color: white
+      new_color: white
+      piece:
+      position:
+      - 3
+      - 3
+      notation: d5
+    - *134
+    - *150
+    - &163 !ruby/object:Square
+      color: white
+      new_color: white
+      piece:
+      position:
+      - 2
+      - 6
+      notation: g6
+    - &190 !ruby/object:Square
+      color: white
+      new_color: white
+      piece:
+      position:
+      - 3
+      - 7
+      notation: h5
+    - &151 !ruby/object:Square
+      color: white
+      new_color: white
+      piece: &175 !ruby/object:King
+        side: black
+        piece_symbol: "♚"
+        on_square: *151
+        position: &152
+        - 0
+        - 4
+        origin: *152
+        have_moved: 0
+        valid_moves:
+        - *153
+        supported: 1
+        supporting:
+        - !ruby/object:Pawn
+          side: black
+          piece_symbol: "♟︎"
+          on_square: *153
+          position: *149
+          origin: *149
+          have_moved: 0
+          valid_moves:
+          - &168 !ruby/object:Square
+            color: dark
+            new_color: dark
+            piece:
+            position:
+            - 2
+            - 5
+            notation: f6
+          - &181 !ruby/object:Square
+            color: white
+            new_color: white
+            piece:
+            position:
+            - 3
+            - 5
+            notation: f5
+          supported: 1
+          supporting: []
+        - &154 !ruby/object:Pawn
+          side: black
+          piece_symbol: "♟︎"
+          on_square: &185 !ruby/object:Square
+            color: white
+            new_color: white
+            piece: *154
+            position: &155
+            - 1
+            - 3
+            notation: d7
+          position: *155
+          origin: *155
+          have_moved: 0
+          valid_moves:
+          - &159 !ruby/object:Square
+            color: dark
+            new_color: dark
+            piece:
+            position:
+            - 2
+            - 3
+            notation: d6
+          - *156
+          supported: 4
+          supporting: []
+        - &157 !ruby/object:Bishop
+          side: black
+          piece_symbol: "♝"
+          on_square: &184 !ruby/object:Square
+            color: dark
+            new_color: dark
+            piece: *157
+            position: &158
+            - 0
+            - 5
+            notation: f8
+          position: *158
+          valid_moves:
+          - &167 !ruby/object:Square
+            color: dark
+            new_color: dark
+            piece:
+            position: &201
+            - 1
+            - 4
+            notation: e7
+          - *159
+          - &178 !ruby/object:Square
+            color: dark
+            new_color: dark
+            piece:
+            position:
+            - 3
+            - 2
+            notation: c5
+          - *160
+          - *145
+          supported: 1
+          supporting:
+          - &161 !ruby/object:Pawn
+            side: black
+            piece_symbol: "♟︎"
+            on_square: &164 !ruby/object:Square
+              color: dark
+              new_color: dark
+              piece: *161
+              position: &162
+              - 3
+              - 6
+              notation: g5
+            position: *162
+            origin: &186
+            - 1
+            - 6
+            have_moved: 0
+            valid_moves:
+            - *163
+            - *164
+            supported: 1
+            supporting: []
+        - &165 !ruby/object:Queen
+          side: black
+          piece_symbol: "♛"
+          on_square: !ruby/object:Square
+            color: dark
+            new_color: dark
+            piece: *165
+            position: &166
+            - 0
+            - 3
+            notation: d8
+          position: *166
+          valid_moves:
+          - *167
+          - *168
+          - *164
+          - *169
+          supported: 1
+          supporting:
+          - *154
+          - &170 !ruby/object:Bishop
+            side: black
+            piece_symbol: "♝"
+            on_square: !ruby/object:Square
+              color: white
+              new_color: white
+              piece: *170
+              position: &171
+              - 0
+              - 2
+              notation: c8
+            position: *171
+            valid_moves: []
+            supported: 1
+            supporting:
+            - &172 !ruby/object:Pawn
+              side: black
+              piece_symbol: "♟︎"
+              on_square: !ruby/object:Square
+                color: white
+                new_color: white
+                piece: *172
+                position: &173
+                - 1
+                - 1
+                notation: b7
+              position: *173
+              origin: *173
+              have_moved: 0
+              valid_moves:
+              - !ruby/object:Square
+                color: dark
+                new_color: dark
+                piece:
+                position:
+                - 2
+                - 1
+                notation: b6
+              - *174
+              supported: 1
+              supporting: []
+            - *154
+          - *175
+          - &176 !ruby/object:Pawn
+            side: black
+            piece_symbol: "♟︎"
+            on_square: !ruby/object:Square
+              color: dark
+              new_color: dark
+              piece: *176
+              position: &177
+              - 1
+              - 2
+              notation: c7
+            position: *177
+            origin: *177
+            have_moved: 0
+            valid_moves:
+            - &209 !ruby/object:Square
+              color: white
+              new_color: white
+              piece:
+              position:
+              - 2
+              - 2
+              notation: c6
+            - *178
+            supported: 1
+            supporting: []
+      position: *152
+      notation: e8
+    - &179 !ruby/object:Square
+      color: white
+      new_color: white
+      piece: &210 !ruby/object:Knight
+        side: black
+        piece_symbol: "♞"
+        on_square: *179
+        position: &180
+        - 0
+        - 6
+        valid_moves:
+        - &189 !ruby/object:Square
+          color: dark
+          new_color: dark
+          piece:
+          position:
+          - 2
+          - 7
+          notation: h6
+        - *168
+        - *167
+        supported: 1
+        supporting: []
+      position: *180
+      notation: g8
+    - *168
+    - *181
+    - *182
+    - *183
+    - *184
+    - *167
+    - *185
+    - !ruby/object:Square
+      color: dark
+      new_color: dark
+      piece:
+      position: *186
+      notation: g7
+    - &187 !ruby/object:Square
+      color: white
+      new_color: white
+      piece: &202 !ruby/object:Pawn
+        side: black
+        piece_symbol: "♟︎"
+        on_square: *187
+        position: &188
+        - 1
+        - 7
+        origin: *188
+        have_moved: 0
+        valid_moves:
+        - *189
+        - *190
+        supported: 1
+        supporting: []
+      position: *188
+      notation: h7
+    supported: 0
+    supporting:
+    - *123
+    - *128
+  - *118
+  - &191 !ruby/object:Knight
+    side: white
+    piece_symbol: "♘"
+    on_square: !ruby/object:Square
+      color: dark
+      new_color: dark
+      piece: *191
+      position: &192
+      - 7
+      - 6
+      notation: g1
+    position: *192
+    valid_moves:
+    - *193
+    - *183
+    - *120
+    supported: 1
+    supporting: []
+  - &194 !ruby/object:Rook
+    side: white
+    piece_symbol: "♖"
+    on_square: !ruby/object:Square
+      color: white
+      new_color: white
+      piece: *194
+      position: &195
+      - 7
+      - 7
+      notation: h1
+    position: *195
+    origin: *195
+    have_moved: 0
+    valid_moves: []
+    supported: 0
+    supporting:
+    - *138
+    - *191
+- - *175
+  - &196 !ruby/object:Pawn
+    side: black
+    piece_symbol: "♟︎"
+    on_square: !ruby/object:Square
+      color: dark
+      new_color: dark
+      piece: *196
+      position: &197
+      - 3
+      - 0
+      notation: a5
+    position: *197
+    origin: &205
+    - 1
+    - 0
+    have_moved: 1
+    valid_moves:
+    - *198
+    supported: 1
+    supporting: []
+  - *172
+  - *176
+  - *154
+  - &199 !ruby/object:Pawn
+    side: black
+    piece_symbol: "♟︎"
+    on_square: !ruby/object:Square
+      color: dark
+      new_color: dark
+      piece: *199
+      position: &200
+      - 3
+      - 4
+      notation: e5
+    position: *200
+    origin: *201
+    have_moved: 1
+    valid_moves: []
+    supported: 0
+    supporting: []
+  - *161
+  - *202
+  - &203 !ruby/object:Rook
+    side: black
+    piece_symbol: "♜"
+    on_square: !ruby/object:Square
+      color: white
+      new_color: white
+      piece: *203
+      position: &204
+      - 0
+      - 0
+      notation: a8
+    position: *204
+    origin: *204
+    have_moved: 0
+    valid_moves:
+    - !ruby/object:Square
+      color: dark
+      new_color: dark
+      piece:
+      position: *205
+      notation: a7
+    - *206
+    supported: 0
+    supporting:
+    - *196
+    - &207 !ruby/object:Knight
+      side: black
+      piece_symbol: "♞"
+      on_square: !ruby/object:Square
+        color: dark
+        new_color: dark
+        piece: *207
+        position: &208
+        - 0
+        - 1
+        notation: b8
+      position: *208
+      valid_moves:
+      - *209
+      - *206
+      supported: 1
+      supporting:
+      - *154
+  - *207
+  - *170
+  - *165
+  - *157
+  - *210
+  - &211 !ruby/object:Rook
+    side: black
+    piece_symbol: "♜"
+    on_square: !ruby/object:Square
+      color: dark
+      new_color: dark
+      piece: *211
+      position: &212
+      - 0
+      - 7
+      notation: h8
+    position: *212
+    origin: *212
+    have_moved: 0
+    valid_moves: []
+    supported: 0
+    supporting:
+    - *202
+    - *210
+- []
