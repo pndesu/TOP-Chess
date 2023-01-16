@@ -191,7 +191,13 @@ class Game
         Black.pieces.each{|piece| piece.update_valid_moves}
         Black.pieces.each{|piece| piece.update_supporting_squares}
 
-        
+        square = white.get_square('g1')
+        target_square = get_square('f3')
+        move_to_new_square(square, target_square)
+        target_square.piece.update_valid_moves
+        White.pieces.each{|piece| piece.update_valid_moves}
+        White.pieces.each{|piece| piece.update_supporting_squares}
+
         square = white.get_square('d1')
         target_square = get_square('d6')
         move_to_new_square(square, target_square)
@@ -201,6 +207,14 @@ class Game
 
         white.short_castle
         black.long_castle
+
+        square = white.get_square('c8')
+        target_square = get_square('a8')
+        move_to_new_square(square, target_square) if (check_valid_side?(square, 'black') && check_valid_piece_move?(square, target_square))
+        target_square.piece.update_valid_moves
+        White.pieces.each{|piece| piece.update_valid_moves}
+        White.pieces.each{|piece| piece.update_supporting_squares}
+
         if checkmate?('black')
             puts "Checkmate! White won!"
         end

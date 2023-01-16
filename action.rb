@@ -277,6 +277,31 @@ module SquareAction
     end
 
     def move_to_new_square(old_square, new_square)
+        take_enpassant(old_square, new_square)
+        if new_square.piece != nil && !new_square.piece.instance_of?(EnPassant)
+            White.pieces.delete_at(White.pieces.find_index(new_square.piece)) if new_square.piece.side == 'white'
+            Black.pieces.delete_at(Black.pieces.find_index(new_square.piece)) if new_square.piece.side == 'black'
+        end
+        new_square.piece = old_square.piece
+        new_square.piece.on_square = new_square
+        new_square.piece.position = new_square.position
+        promote_pawn(old_square, new_square)
+        old_square.piece = nil
+    end
+
+    def promote_pawn(old_square, new_square)
+        if (old_square.piece.instance_of?(Pawn) && old_square.piece.side == 'white' && new_square.position[0] == 0)
+            White.pieces.delete(old_square.piece)
+            new_square.piece = Queen.new(side: 'white', piece_symbol: '♕', on_square: Board.board[new_square.position[0]][new_square.position[1]])
+            White.pieces.push(new_square.piece)
+        elsif (old_square.piece.instance_of?(Pawn) && old_square.piece.side == 'black' && new_square.position[0] == 7)
+            Black.pieces.delete(old_square.piece)
+            new_square.piece = Queen.new(side: 'black', piece_symbol: '♛', on_square: Board.board[new_square.position[0]][new_square.position[1]])
+            Black.pieces.push(new_square.piece)
+        end
+    end
+
+    def take_enpassant(old_square, new_square)
         if old_square.piece.instance_of?(Pawn) && old_square.piece.side == 'white' && new_square.piece.instance_of?(EnPassant)
             Black.pieces.delete_at(Black.pieces.find_index(Board.board[new_square.position[0] + 1][new_square.position[1]].piece))
             Board.board[new_square.position[0] + 1][new_square.position[1]].piece = nil 
@@ -285,14 +310,6 @@ module SquareAction
             White.pieces.delete_at(White.pieces.find_index(Board.board[new_square.position[0] - 1][new_square.position[1]].piece))
             Board.board[new_square.position[0] - 1][new_square.position[1]].piece = nil 
         end
-        if new_square.piece != nil && !new_square.piece.instance_of?(EnPassant)
-            White.pieces.delete_at(White.pieces.find_index(new_square.piece)) if new_square.piece.side == 'white'
-            Black.pieces.delete_at(Black.pieces.find_index(new_square.piece)) if new_square.piece.side == 'black'
-        end
-        new_square.piece = old_square.piece
-        new_square.piece.on_square = new_square
-        new_square.piece.position = new_square.position
-        old_square.piece = nil
     end
 
     def check_board_for_enpassant(old_board, new_board)
