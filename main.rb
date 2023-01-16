@@ -39,17 +39,18 @@ class Game
         Black.pieces.each{|piece| piece.update_valid_moves}
         if check?('white')
             reload_board
+            board.display_board
             white_turn
         else
+            continue_board
+            @last_move = [square, target_square]
+            change_square_color(target_square, 'green')
+            White.pieces.each{|piece| piece.update_valid_moves}
+            White.pieces.each{|piece| piece.update_supporting_squares}
             if checkmate?('black')
                 puts "Checkmate! White won!"
                 exit
             end
-            continue_board
-            change_square_color(target_square, 'green')
-            @last_move = [square, target_square]
-            White.pieces.each{|piece| piece.update_valid_moves}
-            White.pieces.each{|piece| piece.update_supporting_squares}
             board.display_board
             @turn += 1
             take_turn
@@ -59,7 +60,7 @@ class Game
     def black_turn
         puts "Black's turn"
         Black.pieces.each{|piece| piece.update_valid_moves}
-        File.open("old_board.yml", "w"){|file| file.write([Board.board, White.pieces, Black.pieces].to_yaml)}
+        File.open("old_board.yml", "w"){|file| file.write([Board.board, White.pieces, Black.pieces, @last_move].to_yaml)}
         input = get_user_input('black')
         square = get_square(input[0])
         target_square = get_square(input[1])
@@ -72,17 +73,18 @@ class Game
         White.pieces.each{|piece| piece.update_valid_moves}
         if check?('black')
             reload_board
+            board.display_board
             black_turn
         else
+            continue_board
+            @last_move = [square, target_square]
+            change_square_color(target_square, 'green')
+            Black.pieces.each{|piece| piece.update_valid_moves}
+            Black.pieces.each{|piece| piece.update_supporting_squares}
             if checkmate?('white')
                 puts "Checkmate! Black won!"
                 exit
             end
-            continue_board
-            change_square_color(target_square, 'green')
-            @last_move = [square, target_square]
-            Black.pieces.each{|piece| piece.update_valid_moves}
-            Black.pieces.each{|piece| piece.update_supporting_squares}
             board.display_board
             @turn += 1
             take_turn
@@ -91,8 +93,8 @@ class Game
     
     def get_user_input(side) #Get user input and change square color
         arr = []
-        change_square_color(last_move[0], last_move[0].color) if last_move.length == 2
-        change_square_color(last_move[1], last_move[1].color) if last_move.length == 2
+        last_move.each{|move| change_square_color(move, move.color)} if last_move.length != 0
+        # change_valid_move_squares_color(last_move[0], 'off') if last_move.length != 0
         loop do
             print 'Enter square: '
             input = gets.chomp
@@ -117,6 +119,7 @@ class Game
             puts ErrorMessage('invalid_input')
         end
         change_valid_move_squares_color(get_square(arr[0]), 'off')
+        # @last_move = [get_square(arr[0]), get_square(arr[1])]
         arr
     end
 
@@ -125,6 +128,7 @@ class Game
         board.update_board(old_board[0])
         white.update_piece(old_board[1])
         black.update_piece(old_board[2])
+        @last_move = old_board[3]
         puts ErrorMessage('invalid_move')
     end
 
