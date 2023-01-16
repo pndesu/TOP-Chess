@@ -13,7 +13,7 @@ module PieceAction
         [[7,2], [7,5]].each{|i| Board.board[i[0]][i[1]].piece = Bishop.new(side: side, piece_symbol: '♗', on_square: Board.board[i[0]][i[1]])} if side == 'white'
         [[0,2], [0,5]].each{|i| Board.board[i[0]][i[1]].piece = Bishop.new(side: side, piece_symbol: '♝', on_square: Board.board[i[0]][i[1]])} if side == 'black'
     end
-
+    
     def spawn_rook(side)
         [[7,0], [7,7]].each{|i| Board.board[i[0]][i[1]].piece = Rook.new(side: side, piece_symbol: '♖', on_square: Board.board[i[0]][i[1]])} if side == 'white'
         [[0,0], [0,7]].each{|i| Board.board[i[0]][i[1]].piece = Rook.new(side: side, piece_symbol: '♜', on_square: Board.board[i[0]][i[1]])} if side == 'black'
@@ -271,7 +271,7 @@ module PieceAction
             end
         end
     end
-    
+
 end
 
 module SquareAction
@@ -313,13 +313,49 @@ module SquareAction
     def promote_pawn(old_square, new_square)
         if (old_square.piece.instance_of?(Pawn) && old_square.piece.side == 'white' && new_square.position[0] == 0)
             White.pieces.delete(old_square.piece)
-            new_square.piece = Queen.new(side: 'white', piece_symbol: '♕', on_square: Board.board[new_square.position[0]][new_square.position[1]])
+            print_promote_instruction
+            loop do
+                print 
+                choice = gets.chomp
+                if choice.match(/^[1-4]$/)
+                    case choice
+                        when '1' then new_square.piece = Queen.new(side: 'white', piece_symbol: '♕', on_square: Board.board[new_square.position[0]][new_square.position[1]])
+                        when '2' then new_square.piece = Rook.new(side: 'white', piece_symbol: '♖', on_square: Board.board[new_square.position[0]][new_square.position[1]])
+                        when '3' then new_square.piece = Knight.new(side: 'white', piece_symbol: '♘', on_square: Board.board[new_square.position[0]][new_square.position[1]])
+                        when '4' then new_square.piece = Bishop.new(side: 'white', piece_symbol: '♗', on_square: Board.board[new_square.position[0]][new_square.position[1]])
+                    end
+                    break
+                end
+            end
             White.pieces.push(new_square.piece)
         elsif (old_square.piece.instance_of?(Pawn) && old_square.piece.side == 'black' && new_square.position[0] == 7)
             Black.pieces.delete(old_square.piece)
-            new_square.piece = Queen.new(side: 'black', piece_symbol: '♛', on_square: Board.board[new_square.position[0]][new_square.position[1]])
+            print_promote_instruction
+            loop do
+                print 
+                choice = gets.chomp
+                if choice.match(/^[1-4]$/)
+                    case choice
+                        when '1' then new_square.piece = Queen.new(side: 'black', piece_symbol: '♛', on_square: Board.board[new_square.position[0]][new_square.position[1]])
+                        when '2' then new_square.piece = Rook.new(side: 'black', piece_symbol: '♜', on_square: Board.board[new_square.position[0]][new_square.position[1]])
+                        when '3' then new_square.piece = Knight.new(side: 'black', piece_symbol: '♞', on_square: Board.board[new_square.position[0]][new_square.position[1]])
+                        when '4' then new_square.piece = Bishop.new(side: 'black', piece_symbol: '♝', on_square: Board.board[new_square.position[0]][new_square.position[1]])
+                    end
+                    break
+                end
+            end
             Black.pieces.push(new_square.piece)
         end
+    end
+
+    def print_promote_instruction
+        instruction = <<-HEREDOC
+Enter 1 to promote to a queen
+Enter 2 to promote to a rook
+Enter 3 to promote to a knight
+Enter 4 to promote to a bishop
+            HEREDOC
+            print instruction
     end
 
     def take_enpassant(old_square, new_square)
