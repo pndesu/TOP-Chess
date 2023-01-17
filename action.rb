@@ -100,10 +100,22 @@ module PieceAction
         
         if square.piece.side == 'white' #Needs to update all white pieces valid move after white makes a move
             moves = basic_moves.map{|direction| direction[0] if (direction[0] != nil && (direction[0].piece == nil || (direction[0].piece.side == 'black' && direction[0].piece.supported == 0)))}.compact
-            Black.pieces.each{|piece| moves -= piece.valid_moves}
+            Black.pieces.each do |piece|
+                if piece.instance_of?(Pawn)
+                    moves -= [Board.board[piece.position[0] + 1][piece.position[1] + 1], Board.board[piece.position[0] + 1][piece.position[1] - 1]]
+                else
+                    moves -= piece.valid_moves
+                end
+            end
         else
             moves = basic_moves.map{|direction| direction[0] if (direction[0] != nil && (direction[0].piece == nil || (direction[0].piece.side == 'white' && direction[0].piece.supported == 0)))}.compact
-            White.pieces.each{|piece| moves -= piece.valid_moves}
+            White.pieces.each do |piece|
+                if piece.instance_of?(Pawn)
+                    moves -= [Board.board[piece.position[0] - 1][piece.position[1] + 1], Board.board[piece.position[0] - 1][piece.position[1] - 1]]
+                else
+                    moves -= piece.valid_moves
+                end
+            end
         end
         moves
     end
