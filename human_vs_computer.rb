@@ -24,6 +24,13 @@ class HumanVsComputer
     def black_turn
         puts "Black's turn"
         Black.pieces.each{|piece| piece.update_valid_moves}
+
+        if stalemate?('black')
+            File.delete("./saved_games/#{@filename}") if @filename != nil
+            puts "Stalemate!"
+            continue_playing
+        end
+
         File.open("old_board", "w"){|file| Marshal.dump([Board.board, White.pieces, Black.pieces, @last_move], file)}
         last_move.each{|move| change_square_color(move, move.color)} if last_move.length != 0
         moveable_pieces = Black.pieces.select{|piece| piece.valid_moves.length > 0}

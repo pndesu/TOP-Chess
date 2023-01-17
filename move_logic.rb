@@ -25,6 +25,13 @@ module MoveLogic
     def white_turn
         puts "White's turn"
         White.pieces.each{|piece| piece.update_valid_moves}
+
+        if stalemate?('white')
+            File.delete("./saved_games/#{@filename}") if @filename != nil
+            puts "Stalemate!"
+            continue_playing
+        end
+
         File.open("old_board", "w"){|file| Marshal.dump([Board.board, White.pieces, Black.pieces, @last_move], file)}
         last_move.each{|move| change_square_color(move, move.color)} if last_move.length != 0
         input = get_user_input('white')
@@ -63,6 +70,13 @@ module MoveLogic
     def black_turn
         puts "Black's turn"
         Black.pieces.each{|piece| piece.update_valid_moves}
+
+        if stalemate?('black')
+            File.delete("./saved_games/#{@filename}") if @filename != nil
+            puts "Stalemate!"
+            continue_playing
+        end
+
         File.open("old_board", "w"){|file| Marshal.dump([Board.board, White.pieces, Black.pieces, @last_move], file)}
         last_move.each{|move| change_square_color(move, move.color)} if last_move.length != 0
         input = get_user_input('black')

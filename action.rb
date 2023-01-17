@@ -267,6 +267,13 @@ module PieceAction
         end
     end
 
+    def stalemate?(side)
+        if side == 'white'
+            return White.pieces[1..].all?{|piece| piece.valid_moves.length == 0} && White.pieces[0].valid_moves.length == 0 
+        else
+            return Black.pieces[1..].all?{|piece| piece.valid_moves.length == 0} && Black.pieces[0].valid_moves.length == 0 
+        end
+    end
 end
 
 module SquareAction
