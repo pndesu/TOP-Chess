@@ -147,7 +147,7 @@ module MoveLogic
     end
 
     def reload_board
-        old_board = Psych.unsafe_load(File.read("old_board.yml"))
+        old_board = YAML.load_file("old_board.yml", aliases: true, permitted_classes: [Square, Pawn, Knight, Rook, Bishop, Queen, King, EnPassant])
         board.update_board(old_board[0])
         white.update_piece(old_board[1])
         black.update_piece(old_board[2])
@@ -157,7 +157,7 @@ module MoveLogic
 
     def continue_board
         new_board = Board.board
-        old_board = Psych.unsafe_load(File.read("old_board.yml"))
+        old_board = YAML.load_file("old_board.yml", aliases: true, permitted_classes: [Square, Pawn, Knight, Rook, Bishop, Queen, King, EnPassant])
         check_board_for_enpassant(old_board[0], new_board)
     end
 end
