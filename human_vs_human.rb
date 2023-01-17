@@ -7,12 +7,13 @@ require_relative 'move_logic.rb'
 require 'yaml'
 
 class HumanVsHuman
-    attr_accessor :turn, :board, :white, :black, :last_move
+    attr_accessor :turn, :board, :white, :black, :last_move, :filename
     include PieceAction, SquareAction, Display, MoveLogic
     def initialize
         @board = Board.new
         @white = White.new
         @black = Black.new
+        @filename = nil
         @board.display_board
         @turn = 0
         @last_move = []

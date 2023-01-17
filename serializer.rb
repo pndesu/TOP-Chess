@@ -5,12 +5,13 @@ require 'yaml'
 module Serializer
     include PieceAction, SquareAction, Display
 
-    def save(filename: create_filename)
+    def save
         Dir.mkdir('saved_games') unless Dir.exist?('saved_games')
         folder = Dir.glob("saved_games/*")
+        File.delete("./saved_games/#{@filename}") if @filename != nil
         filename = create_filename
-        File.open("./saved_games/#{filename}.yaml", 'w'){|file| file.puts(YAML::dump(self))}
-        exit
+        File.open("./saved_games/#{filename}", 'w'){|file| file.puts(YAML::dump(self))}
+        continue_playing
     end
 
     def create_filename
@@ -51,6 +52,10 @@ module Serializer
     end
 
     def continue_playing
+        Board.reset_board
+        White.reset_pieces
+        Black.reset_pieces
+
         print "Press [y] to continue playing: "
         input = gets.chomp.downcase
         if input == 'y'

@@ -383,7 +383,7 @@ Enter 4 to promote to a bishop
     def change_valid_move_squares_color(square, mode)
         if mode == 'on'
             square.piece.valid_moves.each do |position|
-                if position.piece == nil
+                if position.piece == nil || position.piece.instance_of?(EnPassant)
                     change_square_color(position, 'round')
                 else
                     change_square_color(position, 'red')
