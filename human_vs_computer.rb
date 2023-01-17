@@ -22,17 +22,9 @@ class HumanVsComputer
     end
 
     def black_turn
-        # if checkmate?('black')
-        #     puts "Checkmate! White won!"
-        #     Board.reset_board
-        #     White.reset_pieces
-        #     Black.reset_pieces
-        #     continue_playing
-        # end
-        
         puts "Black's turn"
         Black.pieces.each{|piece| piece.update_valid_moves}
-        File.open("old_board.yml", "w"){|file| file.write([Board.board, White.pieces, Black.pieces, @last_move].to_yaml)}
+        File.open("old_board", "w"){|file| Marshal.dump([Board.board, White.pieces, Black.pieces, @last_move], file)}
         last_move.each{|move| change_square_color(move, move.color)} if last_move.length != 0
         moveable_pieces = Black.pieces.select{|piece| piece.valid_moves.length > 0}
         square = moveable_pieces.sample.on_square
@@ -60,7 +52,7 @@ class HumanVsComputer
             board.display_board
             White.pieces.each{|piece| piece.update_valid_moves}
             if checkmate?('white')
-                File.delete("./saved_games/#{@filename}.yaml") if @filename != nil
+                File.delete("./saved_games/#{@filename}") if @filename != nil
                 puts "Checkmate! Black won!"
                 continue_playing
             end
@@ -69,5 +61,3 @@ class HumanVsComputer
         end
     end
 end
-
-# HumanVsComputer.new.play

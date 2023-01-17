@@ -10,7 +10,7 @@ module Serializer
         folder = Dir.glob("saved_games/*")
         File.delete("./saved_games/#{@filename}") if @filename != nil
         filename = create_filename
-        File.open("./saved_games/#{filename}", 'w'){|file| file.puts(YAML::dump(self))}
+        File.open("./saved_games/#{filename}", 'w'){|file| file.puts(Marshal.dump(self, file))}
         continue_playing
     end
 
@@ -27,7 +27,7 @@ module Serializer
             input = gets.chomp.to_i
             puts ""
             if (input.between?(1, folder.length))
-                saved_game = Psych.unsafe_load(File.read("./saved_games/#{folder[input - 1]}"))
+                saved_game = Marshal.load(File.read("./saved_games/#{folder[input - 1]}"))
                 saved_game.filename = folder[input - 1]
                 saved_game.play
             end

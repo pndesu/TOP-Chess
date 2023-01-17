@@ -197,14 +197,18 @@ module PieceAction
                 elsif piece.position[0] < king.position[0]
                     if piece.position[1] < king.position[1]
                         (0..king.position[1] - 1 - piece.position[1]).each{|i| in_check_squares << Board.board[piece.position[0] + i][piece.position[1] + i]}
-                    else
+                    elsif piece.position[1] > king.position[1]
                         (0..piece.position[1]- 1 - king.position[1]).each{|i| in_check_squares << Board.board[piece.position[0] + i][piece.position[1] - i]}
+                    else
+                        (0..piece.position[1]- 1 - king.position[1]).each{|i| in_check_squares << Board.board[piece.position[0] + i][piece.position[1]]}
                     end
                 else
                     if piece.position[1] < king.position[1]
                         (0..king.position[1] - 1 - piece.position[1]).each{|i| in_check_squares << Board.board[piece.position[0] - i][piece.position[1] + i]}
-                    else
+                    elsif piece.position[1] > king.position[1]
                         (0..piece.position[1]- 1 - king.position[1]).each{|i| in_check_squares << Board.board[piece.position[0] - i][piece.position[1] - i]}
+                    else
+                        (0..piece.position[1]- 1 - king.position[1]).each{|i| in_check_squares << Board.board[piece.position[0] - i][piece.position[1]]}
                     end
                 end
             end

@@ -23,18 +23,9 @@ module MoveLogic
     end
 
     def white_turn
-        # if checkmate?('white')
-        #     File.delete("./saved_games/#{filename}.yaml") if File.exist?("./saved_games/#{filename}.yaml")
-        #     puts "Checkmate! Black won!"
-        #     Board.reset_board
-        #     White.reset_pieces
-        #     Black.reset_pieces
-        #     continue_playing
-        # end
-        
         puts "White's turn"
         White.pieces.each{|piece| piece.update_valid_moves}
-        File.open("old_board.yml", "w"){|file| file.write([Board.board, White.pieces, Black.pieces].to_yaml)}
+        File.open("old_board", "w"){|file| Marshal.dump([Board.board, White.pieces, Black.pieces, @last_move], file)}
         last_move.each{|move| change_square_color(move, move.color)} if last_move.length != 0
         input = get_user_input('white')
         square = get_square(input[0])
@@ -70,18 +61,9 @@ module MoveLogic
     end
 
     def black_turn
-        # if checkmate?('black')
-        #     File.delete("./saved_games/#{filename}") if File.exist?("./saved_games/#{filename}")
-        #     puts "Checkmate! White won!"
-        #     Board.reset_board
-        #     White.reset_pieces
-        #     Black.reset_pieces
-        #     continue_playing
-        # end
-        
         puts "Black's turn"
         Black.pieces.each{|piece| piece.update_valid_moves}
-        File.open("old_board.yml", "w"){|file| file.write([Board.board, White.pieces, Black.pieces, @last_move].to_yaml)}
+        File.open("old_board", "w"){|file| Marshal.dump([Board.board, White.pieces, Black.pieces, @last_move], file)}
         last_move.each{|move| change_square_color(move, move.color)} if last_move.length != 0
         input = get_user_input('black')
         square = get_square(input[0])
@@ -147,7 +129,7 @@ module MoveLogic
     end
 
     def reload_board
-        old_board = YAML.load_file("old_board.yml", aliases: true, permitted_classes: [Square, Pawn, Knight, Rook, Bishop, Queen, King, EnPassant])
+        old_board = Marshal.load(File.read("old_board"))
         board.update_board(old_board[0])
         white.update_piece(old_board[1])
         black.update_piece(old_board[2])
@@ -157,7 +139,7 @@ module MoveLogic
 
     def continue_board
         new_board = Board.board
-        old_board = YAML.load_file("old_board.yml", aliases: true, permitted_classes: [Square, Pawn, Knight, Rook, Bishop, Queen, King, EnPassant])
+        old_board = Marshal.load(File.read("old_board"))
         check_board_for_enpassant(old_board[0], new_board)
     end
 end
