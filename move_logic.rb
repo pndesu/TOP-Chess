@@ -23,17 +23,17 @@ module MoveLogic
     end
 
     def white_turn
-        White.pieces.each{|piece| piece.update_valid_moves}
-        if checkmate?('white')
-            File.delete("./saved_games/#{filename}.yaml") if File.exist?("./saved_games/#{filename}.yaml")
-            puts "Checkmate! Black won!"
-            Board.reset_board
-            White.reset_pieces
-            Black.reset_pieces
-            continue_playing
-        end
-
+        # if checkmate?('white')
+        #     File.delete("./saved_games/#{filename}.yaml") if File.exist?("./saved_games/#{filename}.yaml")
+        #     puts "Checkmate! Black won!"
+        #     Board.reset_board
+        #     White.reset_pieces
+        #     Black.reset_pieces
+        #     continue_playing
+        # end
+        
         puts "White's turn"
+        White.pieces.each{|piece| piece.update_valid_moves}
         File.open("old_board.yml", "w"){|file| file.write([Board.board, White.pieces, Black.pieces].to_yaml)}
         last_move.each{|move| change_square_color(move, move.color)} if last_move.length != 0
         input = get_user_input('white')
@@ -58,23 +58,29 @@ module MoveLogic
             
             continue_board
             board.display_board
+            Black.pieces.each{|piece| piece.update_valid_moves}
+            if checkmate?('black')
+                File.delete("./saved_games/#{@filename}") if @filename != nil
+                puts "Checkmate! White won!"
+                continue_playing
+            end
             @turn += 1
             take_turn
         end
     end
 
     def black_turn
-        Black.pieces.each{|piece| piece.update_valid_moves}
-        if checkmate?('black')
-            File.delete("./saved_games/#{filename}") if File.exist?("./saved_games/#{filename}")
-            puts "Checkmate! White won!"
-            Board.reset_board
-            White.reset_pieces
-            Black.reset_pieces
-            continue_playing
-        end
-
+        # if checkmate?('black')
+        #     File.delete("./saved_games/#{filename}") if File.exist?("./saved_games/#{filename}")
+        #     puts "Checkmate! White won!"
+        #     Board.reset_board
+        #     White.reset_pieces
+        #     Black.reset_pieces
+        #     continue_playing
+        # end
+        
         puts "Black's turn"
+        Black.pieces.each{|piece| piece.update_valid_moves}
         File.open("old_board.yml", "w"){|file| file.write([Board.board, White.pieces, Black.pieces, @last_move].to_yaml)}
         last_move.each{|move| change_square_color(move, move.color)} if last_move.length != 0
         input = get_user_input('black')
@@ -99,6 +105,12 @@ module MoveLogic
             
             continue_board
             board.display_board
+            White.pieces.each{|piece| piece.update_valid_moves}
+            if checkmate?('white')
+                File.delete("./saved_games/#{@filename}") if @filename != nil
+                puts "Checkmate! Black won!"
+                continue_playing
+            end
             @turn += 1
             take_turn
         end

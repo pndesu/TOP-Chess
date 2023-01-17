@@ -10,7 +10,7 @@ class HumanVsComputer
     attr_accessor :turn, :board, :white, :black, :last_move, :filename
     include PieceAction, SquareAction, Display, MoveLogic
     def initialize
-        @filename = ''
+        @filename = nil
         @board = Board.new
         @white = White.new
         @black = Black.new
@@ -22,16 +22,16 @@ class HumanVsComputer
     end
 
     def black_turn
-        Black.pieces.each{|piece| piece.update_valid_moves}
-        if checkmate?('black')
-            puts "Checkmate! White won!"
-            Board.reset_board
-            White.reset_pieces
-            Black.reset_pieces
-            continue_playing
-        end
-
+        # if checkmate?('black')
+        #     puts "Checkmate! White won!"
+        #     Board.reset_board
+        #     White.reset_pieces
+        #     Black.reset_pieces
+        #     continue_playing
+        # end
+        
         puts "Black's turn"
+        Black.pieces.each{|piece| piece.update_valid_moves}
         File.open("old_board.yml", "w"){|file| file.write([Board.board, White.pieces, Black.pieces, @last_move].to_yaml)}
         last_move.each{|move| change_square_color(move, move.color)} if last_move.length != 0
         moveable_pieces = Black.pieces.select{|piece| piece.valid_moves.length > 0}
@@ -55,8 +55,15 @@ class HumanVsComputer
             Black.pieces.each{|piece| piece.update_valid_moves}
             Black.pieces.each{|piece| piece.update_supporting_squares}
             @storage[0] = Board.board
+
             continue_board
             board.display_board
+            White.pieces.each{|piece| piece.update_valid_moves}
+            if checkmate?('white')
+                File.delete("./saved_games/#{@filename}.yaml") if @filename != nil
+                puts "Checkmate! Black won!"
+                continue_playing
+            end
             @turn += 1
             take_turn
         end
